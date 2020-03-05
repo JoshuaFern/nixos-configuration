@@ -1,1 +1,1 @@
-# NixOS-Configuration
+# NixOS Configuration
