@@ -1,3 +1,6 @@
+# This file is used to identify which machine to load the configuration for.
+# For example, nixos-pc would load the configuration in ./hosts/nixos-pc/default.nix
+# Also sets your hostname to the same string.
 {
   hostname = "nixos-pc";
 }
