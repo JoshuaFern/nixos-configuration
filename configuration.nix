@@ -12,14 +12,15 @@
 #
 # Options:  https://nixos.org/nixos/options.html
 # Packages: https://nixos.org/nixos/packages.html
-# Nix Language: https://learnxinyminutes.com/docs/nix/
+# Nix Language: https://nixos.wiki/wiki/Nix_Expression_Language
+# https://learnxinyminutes.com/docs/nix/
 #
 
 { config, ... }:
-let ident = import ./ident.nix; # Your machine identifier/hostname, create the file yourself using the example.
+let ident = import ./ident.nix; # Your machine identifier/hostname, create the file yourself using the example
 in {
   imports = [ 
-    "/etc/nixos/hosts/${ident.hostname}/default.nix" # Host Config
+    "/etc/nixos/hosts/${ident.hostname}/default.nix" # Import our host configuration
   ];
-  networking.hostName = "${ident.hostname}";
+  networking.hostName = "${ident.hostname}"; # Set our hostname based on the identifier
 }
