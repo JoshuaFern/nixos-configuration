@@ -4,10 +4,9 @@ let
 in
 {
   imports = [
-    ../default.nix # Global Host Options
-    ../../guests # Virtualization Options
-    ../../users/default.nix # Global User Options
-    ../../users/nix/default.nix # "Nix" User Oprtions
+    ./.. # Global Host Options
+    ../../guests/libvirtd/windows/win10-vm # Virtualization Options
+    ../../users/jdf/default.nix # "Nix" User Oprtions
   ];
   #boot.loader.efi.canTouchEfiVariables = true; # Installation process is allowed to modify EFI boot variables.
   #boot.loader.generationsDir.copyKernels = true; # Copy necessary files into /boot so /nix/store is not needed by the boot loader.
@@ -45,10 +44,6 @@ in
     "009900" "00bb00" "005500" "00ff00"
   ];
 
-  environment.etc."mpv/mpv.conf".text = ''
-    fs
-    hwdec=auto
-  '';
   environment.systemPackages = with pkgs; [
     # data/soundfonts
     soundfont-fluid # Frank Wen's pro-quality GM/GS soundfont
@@ -71,8 +66,6 @@ in
     # tools/filesystems
     squashfsTools # Tool for creating and unpacking squashfs filesystems
     squashfuse # FUSE filesystem to mount squashfs archives
-    # tools/graphics
-    grim # Grab images from a Wayland compositor
   ];
   environment.variables = {
     BROWSER = "firefox";
@@ -91,7 +84,7 @@ in
     "/home".options = [ "noatime" "nodiratime" ]; # SSD
     "/mnt/hdd0".options = [ "noatime" "nodiratime" "defaults" ]; # HDD
   };
-                        
+
   fonts.enableDefaultFonts = true;
   fonts.enableFontDir = true;
   fonts.enableGhostscriptFonts = true;
@@ -190,7 +183,7 @@ in
 
   nix.allowedUsers = [ "@wheel" ];
   nix.gc.options = pkgs.lib.mkForce "--delete-older-than 15d";
-  nix.maxJobs = 8; # You should generally set it to the total number of logical cores in your system (e.g., 16 for two CPUs with 4 cores each and hyper-threading). 
+  nix.maxJobs = 8; # You should generally set it to the total number of logical cores in your system (e.g., 16 for two CPUs with 4 cores each and hyper-threading).
   nix.trustedUsers = [ "root" "@wheel" ];
 
   nixpkgs.config = {
@@ -207,7 +200,7 @@ in
     permittedInsecurePackages = [
       "openssl-1.0.2u"
     ];
-                           
+
   };
 
   powerManagement.cpuFreqGovernor = "performance";
@@ -250,7 +243,6 @@ in
     #slock.enable = true;
     ssh.forwardX11 = true;
     ssh.setXAuthLocation = true;
-    sway.enable = true;
     usbtop.enable = true;
   };
 
