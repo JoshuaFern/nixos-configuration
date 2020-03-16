@@ -1,11 +1,10 @@
 { config, pkgs, ... }:
-let secrets = import ../secrets.nix;
-in
-{
-  imports = [
+let
+  secrets = import ../secrets.nix;
+in { imports = [
     ./..
-    <home-manager/nixos>
-    ]; # nix-channel --add https://github.com/rycee/home-manager/archive/master.tar.gz home-manager
+    (import(builtins.fetchGit{ref = "master";url = "https://github.com/rycee/home-manager";}){}).nixos # Home-Manger
+  ];
 
   home-manager.users.jdf = { config, pkgs, lib, ... }: {
     nixpkgs.config = {
@@ -20,23 +19,12 @@ in
       ];
   };
 
-  programs = {
-    chromium.enable = true;
-    firefox = {
+    programs.chromium.enable = true;
+    programs.firefox = {
       enable = true; # Whether to enable Firefox
-      extensions = with pkgs.nur.repos.rycee.firefox-addons; [ # You must manually enable these in Firefox
-        bitwarden # Password Manager
-        decentraleyes # Local CDN Caching
-        greasemonkey # Userscripts
-        https-everywhere # HTTPS
-        multi-account-containers # Web Containers
-        reddit-enhancement-suite # Reddit Enhanced
-        ublock-origin # Adblocking
-        vimium # VIM Hotkeys
-      ];
       package = with pkgs; firefox-devedition-bin; # If state version ≥ 19.09 then this should be wrapped
       profiles.jdf = {
-        extraConfig = builtins.readFile (builtins.fetchurl "https://raw.githubusercontent.com/ghacksuserjs/ghacks-user.js/master/user.js"); # ghacks-user.js
+        #extraConfig = builtins.readFile (builtins.fetchurl "https://raw.githubusercontent.com/ghacksuserjs/ghacks-user.js/master/user.js"); # ghacks-user.js
         id = 0;
         isDefault = true;
         name = "jdf";
@@ -142,30 +130,30 @@ in
         '';
       };
     };
-    git = {
-      enable = true;
-      lfs.enable = true;
-      package = with pkgs; pkgs.gitAndTools.gitFull;
-      userEmail = "JoshuaFern@ProtonMail.com";
-      userName = "Joshua Fern";
+    programs.git.enable = true;
+    programs.git.lfs.enable = true;
+    programs.git.package = with pkgs; gitAndTools.gitFull;
+    programs.git.userEmail = "JoshuaFern@ProtonMail.com";
+    programs.git.userName = "Joshua Fern";
+    programs.home-manager.enable = true; # Let Home Manager install and manage itself
+    programs.home-manager.path = "$HOME/git/home-manager";
+    programs.mpv.config.profile = "gpu-hq";
+    programs.mpv.enable = true;
+    programs.vscode.enable = true;
+    #programs.vscode.extensions = with pkgs; [ vscode-extensions.bbenoist.Nix ];
+    #programs.vscode.haskell.enable = true;
+    programs.vscode.package = with pkgs; vscodium;
+    programs.vscode.userSettings = {
+      "update.channel" = "none";
+      "[nix]"."editor.tabSize" = 2;
     };
-    home-manager = {
-      enable = true; # Let Home Manager install and manage itself
-      path = "$HOME/git/home-manager";
-    };
-    mpv = {
-      config = {
-        profile = "gpu-hq";
-      };
-      enable = true;
-    };
-  };
 
     home = {
       packages = with pkgs; [
        # applications/graphics
        dia # Gnome Diagram drawing software
        imv # Simple X11/Wayland Image Viewer
+       nur.repos.joshuafern.steamgrid
        waifu2x-converter-cpp # Improved fork of Waifu2X C++ using OpenCL and OpenCV
        # applications/misc
        mako # A lightweight Wayland notification daemon
@@ -222,6 +210,7 @@ in
        python3Full # A high-level dynamically-typed programming language
        # development/mobile
        imgpatchtools # Tools to manipulate Android OTA archives
+       nur.repos.joshuafern.qdl
        # development/python-modules
        python38Packages.nix-prefetch-github # Prefetch sources from github
        python38Packages.pywal # Generate and change colorschemes on the fly. A 'wal' rewrite in Python 3.
@@ -239,10 +228,14 @@ in
        solarus # A Zelda-like ARPG game engine
        # misc
        scrcpy # Display and control Android devices over USB or TCP/IP
+       # misc/emulators
+       nur.repos.joshuafern.dosbox-staging
        # misc/themes
        adwaita-qt # A style to bend Qt applications to look like they belong into GNOME Shell
        # misc/vim-plugins
        vimPlugins.vim-nix
+       # servers/x11
+       xorg.xinit
        # tools/audio
        pulsemixer # Cli and curses mixer for pulseaudio
        # tools/graphics
@@ -251,21 +244,22 @@ in
        youtube-dl # Command-line tool to download videos from YouTube.com and other sites
        # tools/networking
        ytcc # Command Line tool to keep track of your favourite YouTube channels without signing up for a Google account
+       # tools/system
+       nvtop # A (h)top like like task monitor for NVIDIA GPUs
       ];
       sessionVariables = {
       };
       stateVersion = "20.03";
     };
 
-    wayland.windowManager.sway = {
+    xsession.enable = true;
+    xsession.windowManager.i3 = {
       config = {
         #assigns = "2: web" = [{ class = "^Firefox$"; }];
         modifier = "Mod4"; # Windows-key modifier
         terminal = "${pkgs.xst}/bin/xst -e ${pkgs.mksh}/bin/mksh";
       };
       enable = true;
-      systemdIntegration = true;
-      xwayland = true;
     };
   };
   #home-manager.useGlobalPkgs = false; # If true, use the global pkgs instead of home-manager.users.<name>.nixpkgs
@@ -278,9 +272,7 @@ in
     hashedPassword = secrets.accountPassword.jdf;
     home = "/home/jdf";
     isNormalUser = true;
-    packages = with pkgs; [
-    ];
-    shell = with pkgs; dash; # When dmenu launches applications they're forked from this shell. Dash is used here for speed and memory reasons, not intended to be used interactively.
+    shell = with pkgs; mksh;
     uid = 1000;
   };
 }

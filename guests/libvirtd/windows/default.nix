@@ -1,7 +1,6 @@
 # guests/libvirtd/windows config
 { config, pkgs, lib, ... }:
-{
-  imports = [ ./.. ];
+{ imports = [ ./.. ];
 
   boot.extraModprobeConfig = "options vfio-pci ids=10de:1c02,10de:10f1"; # GPU PCI-Passthrough
   boot.kernelParams = [
@@ -12,5 +11,7 @@
     # applications/virtualization
     looking-glass-client # A KVM Frame Relay (KVMFR) implementation
     win-virtio # Windows VirtIO Drivers
+    # misc
+    scream-receivers # Audio receivers for the Scream virtual network sound card
   ];
 }

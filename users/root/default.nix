@@ -1,9 +1,12 @@
 { pkgs, ... }:
-{
+let
+  secrets = import ../secrets.nix;
+in {
   users.users.root = {
     createHome = false;
     home = "/root";
-    password = "nix";
+    hashedPassword = secrets.accountPassword.root;
     shell = with pkgs; mksh;
+    uid = 0;
   };
 } 

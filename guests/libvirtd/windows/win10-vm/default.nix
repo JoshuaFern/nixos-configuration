@@ -1,9 +1,9 @@
 { config, pkgs, lib, ... }:
 let
-  name = "win10-vm";
-  isoboot = "/var/lib/libvirt/images/server2019.iso";
-  isoextra = "/var/lib/libvirt/images/virtio-win.iso";
-  disk = "/home/nix/virt/win10.qcow2";
+  name = "win10-vm"; # VM Name
+  isoboot = "/var/lib/libvirt/images/server2019.iso"; # Windows Install Disk
+  isoextra = "/var/lib/libvirt/images/virtio-win.iso"; # VirtIO Drivers
+  disk = "/var/lib/libvirt/images/win10-vm.qcow2"; # Disk Image
 in
 {
   imports = [ ./.. ];
@@ -28,8 +28,8 @@ in
                   <libosinfo:os id="http://microsoft.com/win/2k19"/>
                 </libosinfo:libosinfo>
               </metadata>
-              <memory unit="GiB">9</memory>
-              <currentMemory unit="GiB">9</currentMemory>
+              <memory unit="GiB">10</memory>
+              <currentMemory unit="GiB">10</currentMemory>
               <vcpu placement="static">8</vcpu>
               <os>
                 <type arch="x86_64" machine="pc-q35-4.2">hvm</type>
@@ -128,7 +128,7 @@ in
                 <interface type="network">
                   <mac address="52:54:00:d0:1b:02"/>
                   <source network="default"/>
-                  <model type="e1000e"/>
+                  <model type="virtio"/>
                   <address type="pci" domain="0x0000" bus="0x01" slot="0x00" function="0x0"/>
                 </interface>
                 <serial type="pty">
@@ -143,22 +143,12 @@ in
                   <target type="virtio" name="com.redhat.spice.0"/>
                   <address type="virtio-serial" controller="0" bus="0" port="1"/>
                 </channel>
-                <input type="tablet" bus="usb">
-                  <address type="usb" bus="0" port="1"/>
-                </input>
                 <input type="mouse" bus="ps2"/>
-                <input type="keyboard" bus="ps2"/>
+                <input type="keyboard" bus="virtio"/>
                 <graphics type="spice" autoport="yes">
                   <listen type="address"/>
                   <image compression="off"/>
                 </graphics>
-                <sound model="ich9">
-                  <address type="pci" domain="0x0000" bus="0x00" slot="0x1b" function="0x0"/>
-                </sound>
-                <video>
-                  <model type="qxl" ram="65536" vram="65536" vgamem="16384" heads="1" primary="yes"/>
-                  <address type="pci" domain="0x0000" bus="0x00" slot="0x01" function="0x0"/>
-                </video>
                     <hostdev mode="subsystem" type="pci" managed="yes">
                       <source>
                         <address domain="0x0000" bus="0x01" slot="0x00" function="0x0"/>
@@ -177,12 +167,14 @@ in
                 <redirdev bus="usb" type="spicevmc">
                   <address type="usb" bus="0" port="3"/>
                 </redirdev>
-                <memballoon model="virtio">
-                  <address type="pci" domain="0x0000" bus="0x04" slot="0x00" function="0x0"/>
-                </memballoon>
                 <shmem name='looking-glass'>
                   <model type='ivshmem-plain'/>
                   <size unit='M'>32</size>
+                </shmem>
+                <shmem name='scream-ivshmem'>
+                 <model type='ivshmem-plain'/>
+                 <size unit='M'>2</size>
+                 <address type='pci' domain='0x0000' bus='0x00' slot='0x11' function='0x0'/>
                 </shmem>
               </devices>
             </domain>

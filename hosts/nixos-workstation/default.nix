@@ -1,23 +1,16 @@
 { config, pkgs, lib, ... }:
-let
-  user = "nix"; # Flatpak
-in
 {
-  imports = [
-    ./.. # Global Host Options
-    ../../guests/libvirtd/windows/win10-vm # Virtualization Options
-    ../../users/jdf/default.nix # "Nix" User Oprtions
+  imports = [ ./..
+    ../../users/jdf/default.nix # "jdf" User Oprtions
   ];
-  #boot.loader.efi.canTouchEfiVariables = true; # Installation process is allowed to modify EFI boot variables.
-  #boot.loader.generationsDir.copyKernels = true; # Copy necessary files into /boot so /nix/store is not needed by the boot loader.
-  boot.loader.systemd-boot.configurationLimit = 10; # Maximum configurations in boot menu.
-  boot.loader.systemd-boot.consoleMode = "max"; # The resolution of the console.
+  #boot.loader.efi.canTouchEfiVariables = true; # Allowed to modify EFI boot variables
+  #boot.loader.generationsDir.copyKernels = true; # Copy necessary files into /boot so /nix/store is not needed by the boot loader
+  boot.loader.systemd-boot.configurationLimit = 10; # Maximum configurations in boot menu
+  boot.loader.systemd-boot.consoleMode = "max"; # Console resolution
   boot.loader.systemd-boot.enable = true; # systemd-boot (formerly gummiboot)
-  #boot.kernelPackages = with pkgs; linuxPackages_latest; # Use latest kernel.
-  boot.extraModulePackages = [ ];
+  boot.kernelPackages = with pkgs; linuxPackages_latest; # linux kernel selection
   boot.kernelParams = [
     "vga=0x034d" # 1080p 24bit framebuffer
-    "i915.enable_hd_vgaarb=1"
     "intel_pstate=nohwp" # Disables Intel's HWP (Hardware-managed P-states) https://www.kernel.org/doc/html/v4.12/admin-guide/pm/intel_pstate.html
     # Disable mitigations https://make-linux-fast-again.com
     "noibrs"
@@ -35,9 +28,9 @@ in
     echo bfq > /sys/block/sda/queue/scheduler
     echo bfq > /sys/block/sdb/queue/scheduler
     echo kyber > /sys/block/sdc/queue/scheduler
-    '';
+  '';
 
-  console.colors = [
+  console.colors = [ # Green colorscheme
     "001100" "007700" "00bb00" "007700"
     "009900" "00bb00" "005500" "00bb00"
     "007700" "007700" "00bb00" "007700"
@@ -57,8 +50,6 @@ in
     vorbis-tools # Extra tools for Ogg-Vorbis audio codec
     # applications/misc
     xst # Simple terminal fork that can load config from Xresources
-    # applications/virtualization/driver
-    win-virtio # Windows VirtIO Drivers
     # development/mobile
     abootimg # Manipulate Android Boot Images
     # development/tools
@@ -101,7 +92,6 @@ in
     dejavu_fonts
     font-awesome-ttf
     google-fonts
-    iosevka
     liberation_ttf
     noto-fonts
     terminus_font
@@ -112,7 +102,9 @@ in
   gtk.iconCache.enable = true;
 
   hardware.cpu.intel.updateMicrocode = true;
-  hardware.enableRedistributableFirmware = true;
+
+  hardware.enableAllFirmware = true;
+  hardware.nvidia.modesetting.enable = true;
   hardware.opengl.driSupport = true;
   hardware.opengl.driSupport32Bit = true;
   hardware.opengl.enable = true;
@@ -126,7 +118,7 @@ in
   hardware.pulseaudio.daemon.config = {
     flat-volumes = "no"; # Avoids damaging your hearing. https://www.reddit.com/r/linux/comments/2rjiaa/horrible_decisions_flat_volumes_in_pulseaudio_a/
   };
-  #hardware.steam-hardware.enable = true; # Sets udev rules for Steam Controller, among other devices.
+  hardware.steam-hardware.enable = true; # Sets udev rules for Steam Controller, among other devices
 
   networking.defaultGateway.address = "192.168.1.1";
   networking.enableIPv6 = false;
@@ -240,13 +232,13 @@ in
     '';
     npm.enable = true;
     qt5ct.enable = true;
-    #slock.enable = true;
+    slock.enable = true;
     ssh.forwardX11 = true;
     ssh.setXAuthLocation = true;
     usbtop.enable = true;
   };
 
-  security.chromiumSuidSandbox.enable = true; # May fix the "You are not adequately sandboxed!" issue.
+  security.chromiumSuidSandbox.enable = true; # May fix the "You are not adequately sandboxed!" issue
   security.pam.loginLimits = [{
     domain = "*";
     type = "hard";
@@ -254,49 +246,20 @@ in
     value = "1048576";
   }];
   security.protectKernelImage = true;
-  security.rtkit.enable = true; # Give realtime process priority on demand.
+  security.rtkit.enable = true; # Give realtime process priority on demand
   security.sudo.wheelNeedsPassword = false;
   security.virtualisation.flushL1DataCache = "never";
 
   services = {
-    # services/audio
-    #jack.jackd.enable = true;
-    #jack.jackd.package = with pkgs; jack1;
-    #jack.loopback.enable = true; # Should help things like Steam to work.
-    mpd.enable = true;
-    mpd.extraConfig = ''
-      password "AWQa*#77yiiT!o@read,add,control,admin"
-      max_playlist_length "65535"
-      max_command_list_size "65535"
-    '';
-    mpd.network.listenAddress = "any";
-    # services/desktops
-    #gvfs.enable = true; # GVfs, a userspace virtual filesystem.
-    #pipewire.enable = true;
-    # services/editors
-    emacs.enable = true;
+    accounts-daemon.enable = true; # A DBus service for accessing the list of user accounts and information
+    emacs.enable = true; # Use "emacsclient" to connect to the daemon
     emacs.package = with pkgs; emacs;
-    # services/hardware
-    #ratbagd.enable = true; # Config for gaming mice, check for your device here: https://github.com/libratbag/libratbag/tree/master/data/devices
-    # services/networking
-    #keybase.enable = true;
-    # services/network-filesystems
-    #kbfs.enable = true;
-    #kbfs.mountPoint = "/keybase";
-    # services/printing
-    #printing.enable = true; # Enable printing. On PAPER! How revoltingly archaic.
-    # services/security
-    #tor.client.enable = true;
-    #tor.enable = true;
-    # services/torrent
-    #btpd.enable = true; # Awaiting PR 56279
-    #btpd.bandwidthLimitIn = 500 # Max 1500
-    #btpd.bandwidthLimitOut = 25 # Max 188
-    #btpd.maxUploads = 1
-    # system/boot
-    logind.lidSwitch = "ignore";
-    #
-    accounts-daemon.enable = true;
+    gvfs.enable = true; # Userspace virtual filesystem
+    kmscon.enable = true; # A kms/dri-based userspace virtual terminal implementation
+    pipewire.enable = true; # Server and user space API to deal with multimedia pipelines
+    ratbagd.enable = true; # Configure gaming mice, check for your device here: https://github.com/libratbag/libratbag/tree/master/data/devices
+    xserver.exportConfiguration = true; # Symlink the X server configuration under /etc/X11/xorg.conf
+    xserver.videoDrivers = [ "nvidiaBeta" ]; # Video drivers that will be tried in order until one that supports your card is found
   };
 
   sound.enable = true;
