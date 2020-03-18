@@ -58,17 +58,6 @@
     squashfsTools # Tool for creating and unpacking squashfs filesystems
     squashfuse # FUSE filesystem to mount squashfs archives
   ];
-  environment.variables = {
-    BROWSER = "firefox";
-    EDITOR = "nano";
-    MPV_HOME = "/etc/mpv";
-    QT_QPA_PLATFORMTHEME = "qt5ct";
-    TERM = "urxvt";
-    VISUAL = "nano";
-  };
-  environment.sessionVariables = {
-    WINEDEBUG = "-all"; # Increase Performance with WINE
-  };
 
   fileSystems = {
     "/".options = [ "noatime" "nodiratime" ]; # SSD
@@ -102,9 +91,8 @@
   gtk.iconCache.enable = true;
 
   hardware.cpu.intel.updateMicrocode = true;
-
   hardware.enableAllFirmware = true;
-  hardware.nvidia.modesetting.enable = true;
+  #hardware.nvidia.modesetting.enable = true;
   hardware.opengl.driSupport = true;
   hardware.opengl.driSupport32Bit = true;
   hardware.opengl.enable = true;
@@ -255,10 +243,13 @@
     emacs.enable = true; # Use "emacsclient" to connect to the daemon
     emacs.package = with pkgs; emacs;
     gvfs.enable = true; # Userspace virtual filesystem
-    kmscon.enable = true; # A kms/dri-based userspace virtual terminal implementation
+    #kmscon.enable = true; # A kms/dri-based userspace virtual terminal implementation
     pipewire.enable = true; # Server and user space API to deal with multimedia pipelines
     ratbagd.enable = true; # Configure gaming mice, check for your device here: https://github.com/libratbag/libratbag/tree/master/data/devices
-    xserver.exportConfiguration = true; # Symlink the X server configuration under /etc/X11/xorg.conf
+    xserver.enable = true;
+    xserver.displayManager.defaultSession = "none+i3";
+    #xserver.exportConfiguration = true; # Symlink the X server configuration under /etc/X11/xorg.conf
+    xserver.windowManager.i3.enable = true;
     xserver.videoDrivers = [ "nvidiaBeta" ]; # Video drivers that will be tried in order until one that supports your card is found
   };
 

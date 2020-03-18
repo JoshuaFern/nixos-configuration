@@ -1,6 +1,13 @@
 { config, pkgs, ... }:
 let
   secrets = import ../secrets.nix;
+  thisUser = "jdf";
+  flatpakFlathubPackages = [
+    "com.discordapp.Discord" # Discord - Chat client
+    "org.freedesktop.Platform.Icontheme.Adwaita"
+    "org.gtk.Gtk3theme.Adwaita-dark"
+    "org.jdownloader.JDownloader" # JDownloader - Download management tool
+  ];
 in { imports = [
     ./..
     (import(builtins.fetchGit{ref = "master";url = "https://github.com/rycee/home-manager";}){}).nixos # Home-Manger
@@ -19,6 +26,10 @@ in { imports = [
       ];
   };
 
+    manual.html.enable = true;
+
+    news.display = "silent";
+
     programs.chromium.enable = true;
     programs.firefox = {
       enable = true; # Whether to enable Firefox
@@ -34,7 +45,7 @@ in { imports = [
           "browser.newtabpage.activity-stream.showSponsored" = false;
           "browser.newtabpage.activity-stream.telemetry.structuredIngestion" = false;
           "browser.newtabpage.activity-stream.telemetry.ut.events" = false;
-          "browser.sessionstore.max_tabs_undo" = 1; # Even with Firefox set to not remember history, your closed tabs are stored temporaril
+          "browser.sessionstore.max_tabs_undo" = 1; # Even with Firefox set to not remember history, your closed tabs are stored temporarily
           "browser.startup.firstrunSkipsHomepage" = false;
           "browser.startup.homepage" = "https://www.startpage.com/do/mypage.pl?prfh=enable_stay_controlEEE0N1NsuggestionsEEE1N1Ngeo_mapEEE1N1Nwikipedia_iaEEE1N1Nother_iaEEE1N1Ndisable_open_in_new_windowEEE0N1Ndisable_video_family_filterEEE1N1Nenable_post_methodEEE1N1Nenable_proxy_safety_suggestEEE0N1Ndisable_family_filterEEE1N1Nconnect_to_serverEEEusN1NsslEEE1N1Nlanguage_uiEEEenglishN1NlanguageEEEenglishN1Nwt_unitEEEfahrenheitN1Nnum_of_resultsEEE20N1Nlang_homepageEEEs/nite/en/";
           "browser.translation.detectLanguage" = false;
@@ -136,12 +147,10 @@ in { imports = [
     programs.git.userEmail = "JoshuaFern@ProtonMail.com";
     programs.git.userName = "Joshua Fern";
     programs.home-manager.enable = true; # Let Home Manager install and manage itself
-    programs.home-manager.path = "$HOME/git/home-manager";
+    #programs.home-manager.path = "$HOME/git/home-manager";
     programs.mpv.config.profile = "gpu-hq";
     programs.mpv.enable = true;
     programs.vscode.enable = true;
-    #programs.vscode.extensions = with pkgs; [ vscode-extensions.bbenoist.Nix ];
-    #programs.vscode.haskell.enable = true;
     programs.vscode.package = with pkgs; vscodium;
     programs.vscode.userSettings = {
       "update.channel" = "none";
@@ -149,121 +158,148 @@ in { imports = [
     };
 
     home = {
+      activation = {
+        flatpakActivation = ''
+          echo [Flatpak] Start...
+          ${pkgs.flatpak}/bin/flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+          ${pkgs.flatpak}/bin/flatpak install --user --noninteractive -y flathub ${toString flatpakFlathubPackages}
+          ${pkgs.flatpak}/bin/flatpak update --user -y
+          echo [Flatpak] Done.
+        '';
+      };
       packages = with pkgs; [
-       # applications/graphics
-       dia # Gnome Diagram drawing software
-       imv # Simple X11/Wayland Image Viewer
-       nur.repos.joshuafern.steamgrid
-       waifu2x-converter-cpp # Improved fork of Waifu2X C++ using OpenCL and OpenCV
-       # applications/misc
-       mako # A lightweight Wayland notification daemon
-       mps-youtube # Terminal based YouTube player and downloader
-       mupdf # Lightweight PDF, XPS, and E-book viewer and toolkit written in portable C
-       nnn # Small ncurses-based file browser forked from noice
-       noice # Small ncurses-based file browser
-       ranger # File manager with minimalistic curses interface
-       rtv # Browse Reddit from your Terminal
-       slmenu # A console dmenu-like tool
-       tdrop # A Glorified WM-Independent Dropdown Creator
-       treesheets # Free Form Data Organizer
-       vym # Mind-mapping software
-       zathura # A highly customizable and functional PDF viewer
-       # applications/networking
-       hydroxide # A third-party, open-source ProtonMail bridge
-       # applications/networking/browsers
-       elinks # Full-featured text-mode web browser
-       links2 # A small browser with some graphics support
-       lynx # A text-mode web browser
-       w3m # A text-mode web browser
-       # applications/networking/instant-messengers
-       weechat # A fast, light and extensible chat client
-       # applications/networking/mailreaders
-       mutt-with-sidebar # A small but very powerful text-based mail client
-       # applications/networking/p2p
-       transmission-remote-cli # Curses interface for the Transmission BitTorrent daemon
-       # applications/networking/remote
-       freerdp # A Remote Desktop Protocol Client
-       # applications/radio
-       aldo # Morse code training program
-       unixcw # sound characters as Morse code on the soundcard or console speaker
-       # applications/version-management
-       mercurialFull # A fast, lightweight SCM system for very large distributed projects
-       # applications/video
-       streamlink # CLI for extracting streams from various websites to video player of your choosing
-       # applications/virtualization
-       looking-glass-client # A KVM Frame Relay (KVMFR) implementation
-       # build-support
-       appimage-run # Run appimages
-       # data/icons
-       hicolor-icon-theme # Default fallback theme used by implementations of the icon theme specification
-       # desktops/gnome3
-       gnome3.adwaita-icon-theme
-       gnome-themes-extra
-       # development/compilers
-       go
-       mono # Cross platform, open source .NET development framework
-       # development/haskell-modules
-       shellcheck # Shell script analysis tool
-       # development/interpreters
-       luajit # High-performance JIT compiler for Lua 5.1
-       python2Full # A high-level dynamically-typed programming language
-       python3Full # A high-level dynamically-typed programming language
-       # development/mobile
-       imgpatchtools # Tools to manipulate Android OTA archives
-       nur.repos.joshuafern.qdl
-       # development/python-modules
-       python38Packages.nix-prefetch-github # Prefetch sources from github
-       python38Packages.pywal # Generate and change colorschemes on the fly. A 'wal' rewrite in Python 3.
-       python38Packages.virtualenvwrapper # Enhancements to virtualenv
-       python38Packages.speedtest-cli # Command line interface for testing internet bandwidth using speedtest.net
-       # development/tools
-       apktool # A tool for reverse engineering Android apk files
-       go2nix
-       solarus-quest-editor
-       vgo2nix
-       # games
-       cataclysm-dda # A free, post apocalyptic, zombie infested rogue-like
-       freedroidrpg # Isometric 3D RPG similar to game Diablo
-       mindustry # A sandbox tower defense game
-       solarus # A Zelda-like ARPG game engine
-       # misc
-       scrcpy # Display and control Android devices over USB or TCP/IP
-       # misc/emulators
-       nur.repos.joshuafern.dosbox-staging
-       # misc/themes
-       adwaita-qt # A style to bend Qt applications to look like they belong into GNOME Shell
-       # misc/vim-plugins
-       vimPlugins.vim-nix
-       # servers/x11
-       xorg.xinit
-       # tools/audio
-       pulsemixer # Cli and curses mixer for pulseaudio
-       # tools/graphics
-       grim # Grab images from a Wayland compositor
-       # tools/misc
-       youtube-dl # Command-line tool to download videos from YouTube.com and other sites
-       # tools/networking
-       ytcc # Command Line tool to keep track of your favourite YouTube channels without signing up for a Google account
-       # tools/system
-       nvtop # A (h)top like like task monitor for NVIDIA GPUs
+        # applications/graphics
+        dia # Gnome Diagram drawing software
+        imv # Simple X11/Wayland Image Viewer
+        nur.repos.joshuafern.steamgrid
+        waifu2x-converter-cpp # Improved fork of Waifu2X C++ using OpenCL and OpenCV
+        # applications/misc
+        mako # A lightweight Wayland notification daemon
+        mps-youtube # Terminal based YouTube player and downloader
+        mupdf # Lightweight PDF, XPS, and E-book viewer and toolkit written in portable C
+        nnn # Small ncurses-based file browser forked from noice
+        noice # Small ncurses-based file browser
+        ranger # File manager with minimalistic curses interface
+        rtv # Browse Reddit from your Terminal
+        slmenu # A console dmenu-like tool
+        tdrop # A Glorified WM-Independent Dropdown Creator
+        treesheets # Free Form Data Organizer
+        vym # Mind-mapping software
+        zathura # A highly customizable and functional PDF viewer
+        # applications/networking
+        hydroxide # A third-party, open-source ProtonMail bridge
+        # applications/networking/browsers
+        elinks # Full-featured text-mode web browser
+        links2 # A small browser with some graphics support
+        lynx # A text-mode web browser
+        w3m # A text-mode web browser
+        # applications/networking/instant-messengers
+        weechat # A fast, light and extensible chat client
+        # applications/networking/mailreaders
+        mutt-with-sidebar # A small but very powerful text-based mail client
+        # applications/networking/p2p
+        transmission-remote-cli # Curses interface for the Transmission BitTorrent daemon
+        # applications/networking/remote
+        freerdp # A Remote Desktop Protocol Client
+        # applications/radio
+        aldo # Morse code training program
+        unixcw # sound characters as Morse code on the soundcard or console speaker
+        # applications/version-management
+        mercurialFull # A fast, lightweight SCM system for very large distributed projects
+        # applications/video
+        streamlink # CLI for extracting streams from various websites to video player of your choosing
+        # applications/virtualization
+        looking-glass-client # A KVM Frame Relay (KVMFR) implementation
+        # build-support
+        appimage-run # Run appimages
+        #steam-run
+        steam-run-native
+        # data/icons
+        hicolor-icon-theme # Default fallback theme used by implementations of the icon theme specification
+        # data/soundfonts
+        soundfont-fluid # Frank Wen's pro-quality GM/GS soundfont
+        # desktops/gnome3
+        gnome3.adwaita-icon-theme
+        gnome-themes-extra
+        # development/compilers
+        go
+        mono # Cross platform, open source .NET development framework
+        # development/haskell-modules
+        shellcheck # Shell script analysis tool
+        # development/interpreters
+        luajit # High-performance JIT compiler for Lua 5.1
+        python2Full # A high-level dynamically-typed programming language
+        python3Full # A high-level dynamically-typed programming language
+        # development/mobile
+        imgpatchtools # Tools to manipulate Android OTA archives
+        nur.repos.joshuafern.qdl
+        # development/python-modules
+        python38Packages.nix-prefetch-github # Prefetch sources from github
+        python38Packages.pywal # Generate and change colorschemes on the fly. A 'wal' rewrite in Python 3.
+        python38Packages.virtualenvwrapper # Enhancements to virtualenv
+        python38Packages.speedtest-cli # Command line interface for testing internet bandwidth using speedtest.net
+        # development/tools
+        apktool # A tool for reverse engineering Android apk files
+        go2nix
+        solarus-quest-editor
+        vgo2nix
+        # games
+        cataclysm-dda # A free, post apocalyptic, zombie infested rogue-like
+        eidolon # A single TUI-based registry for drm-free, wine and steam games on linux, accessed through a rofi launch menu
+        freedroidrpg # Isometric 3D RPG similar to game Diablo
+        mindustry # A sandbox tower defense game
+        solarus # A Zelda-like ARPG game engine
+        steam # A digital distribution platform
+        steamcmd # Steam command-line tools
+        # misc
+        scrcpy # Display and control Android devices over USB or TCP/IP
+        # misc/emulators
+        nur.repos.joshuafern.dosbox-staging
+        # misc/themes
+        adwaita-qt # A style to bend Qt applications to look like they belong into GNOME Shell
+        # misc/vim-plugins
+        vimPlugins.vim-nix
+        # servers/x11
+        xorg.xinit
+        # tools/audio
+        pulsemixer # Cli and curses mixer for pulseaudio
+        # tools/graphics
+        grim # Grab images from a Wayland compositor
+        # tools/misc
+        youtube-dl # Command-line tool to download videos from YouTube.com and other sites
+        # tools/networking
+        ytcc # Command Line tool to keep track of your favourite YouTube channels without signing up for a Google account
+        #tools/package-management
+        protontricks # A simple wrapper for running Winetricks commands for Proton-enabled games
+        # tools/system
+        nvtop # A (h)top like like task monitor for NVIDIA GPUs
+        # tools/x11
+        xdg-user-dirs # A tool to help manage well known user directories like the desktop folder and the music folder
       ];
       sessionVariables = {
+        #BROWSER = "firefox";
+        #EDITOR = "nano";
+        #QT_QPA_PLATFORMTHEME = "qt5ct";
+        #VISUAL = "nano";
+        WINEDEBUG = "-all"; # Increase Performance with WINE
       };
       stateVersion = "20.03";
     };
 
+    xdg.enable = true;
+
     xsession.enable = true;
     xsession.windowManager.i3 = {
       config = {
-        #assigns = "2: web" = [{ class = "^Firefox$"; }];
+        #assigns = "5: steam" = [{ class = "^Firefox$"; }];
         modifier = "Mod4"; # Windows-key modifier
         terminal = "${pkgs.xst}/bin/xst -e ${pkgs.mksh}/bin/mksh";
       };
       enable = true;
     };
   };
-  #home-manager.useGlobalPkgs = false; # If true, use the global pkgs instead of home-manager.users.<name>.nixpkgs
-  home-manager.useUserPackages = false; # If true, install packages to /etc/profiles instead of ~/.nix-profile
+  #home-manager.useGlobalPkgs = false; # Use the global pkgs instead of home-manager.users.<name>.nixpkgs
+  home-manager.useUserPackages = false; # Install packages to /etc/profiles instead of ~/.nix-profile
 
   users.users.jdf = {
     createHome = true;
