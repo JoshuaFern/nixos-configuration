@@ -8,8 +8,7 @@ let
     "org.gtk.Gtk3theme.Adwaita-dark"
     "org.jdownloader.JDownloader" # JDownloader - Download management tool
   ];
-in { imports = [
-    ./..
+in { imports = [ ./..
     (import(builtins.fetchGit{ref = "master";url = "https://github.com/rycee/home-manager";}){}).nixos # Home-Manger
   ];
 
@@ -150,6 +149,7 @@ in { imports = [
     #programs.home-manager.path = "$HOME/git/home-manager";
     programs.mpv.config.profile = "gpu-hq";
     programs.mpv.enable = true;
+    programs.rofi.enable = true;
     programs.vscode.enable = true;
     programs.vscode.package = with pkgs; vscodium;
     programs.vscode.userSettings = {
@@ -166,14 +166,27 @@ in { imports = [
           ${pkgs.flatpak}/bin/flatpak update --user -y
           echo [Flatpak] Done.
         '';
+        xdgActivation = ''
+        ${pkgs.xdg-user-dirs}/bin/xdg-user-dirs-update
+        '';
       };
       packages = with pkgs; [
+        # applications/audio
+        cmus # Small, fast and powerful console music player for Linux and *BSD
+        fluidsynth # Real-time software synthesizer based on the SoundFont 2 specifications
+        mikmod # Tracker music player for the terminal
+        moc # An ncurses console audio player designed to be powerful and easy to use
+        mpg123 # Fast console MPEG Audio Player and decoder library
+        schismtracker # Music tracker application, free reimplementation of Impulse Tracker
+        vorbis-tools # Extra tools for Ogg-Vorbis audio codec
         # applications/graphics
         dia # Gnome Diagram drawing software
         imv # Simple X11/Wayland Image Viewer
         nur.repos.joshuafern.steamgrid
         waifu2x-converter-cpp # Improved fork of Waifu2X C++ using OpenCL and OpenCV
         # applications/misc
+        calcurse # A calendar and scheduling application for the command line
+        et # Minimal libnotify-based (egg) timer
         mako # A lightweight Wayland notification daemon
         mps-youtube # Terminal based YouTube player and downloader
         mupdf # Lightweight PDF, XPS, and E-book viewer and toolkit written in portable C
@@ -185,6 +198,8 @@ in { imports = [
         tdrop # A Glorified WM-Independent Dropdown Creator
         treesheets # Free Form Data Organizer
         vym # Mind-mapping software
+        wtf # The personal information dashboard for your terminal
+        xst # Simple terminal fork that can load config from Xresources
         zathura # A highly customizable and functional PDF viewer
         # applications/networking
         hydroxide # A third-party, open-source ProtonMail bridge
@@ -205,13 +220,14 @@ in { imports = [
         aldo # Morse code training program
         unixcw # sound characters as Morse code on the soundcard or console speaker
         # applications/version-management
+        gitAndTools.gitFull # Distributed version control system
         mercurialFull # A fast, lightweight SCM system for very large distributed projects
         # applications/video
         streamlink # CLI for extracting streams from various websites to video player of your choosing
         # applications/virtualization
         looking-glass-client # A KVM Frame Relay (KVMFR) implementation
         # build-support
-        appimage-run # Run appimages
+        appimage-run
         #steam-run
         steam-run-native
         # data/icons
@@ -222,15 +238,19 @@ in { imports = [
         gnome3.adwaita-icon-theme
         gnome-themes-extra
         # development/compilers
-        go
+        go # The Go Programming language
         mono # Cross platform, open source .NET development framework
         # development/haskell-modules
+        nixfmt # An opinionated formatter for Nix
         shellcheck # Shell script analysis tool
         # development/interpreters
         luajit # High-performance JIT compiler for Lua 5.1
         python2Full # A high-level dynamically-typed programming language
         python3Full # A high-level dynamically-typed programming language
+        # development/libraries
+        libnotify # A library that sends desktop notifications to a notification daemon
         # development/mobile
+        abootimg # Manipulate Android Boot Images
         imgpatchtools # Tools to manipulate Android OTA archives
         nur.repos.joshuafern.qdl
         # development/python-modules
@@ -240,12 +260,15 @@ in { imports = [
         python38Packages.speedtest-cli # Command line interface for testing internet bandwidth using speedtest.net
         # development/tools
         apktool # A tool for reverse engineering Android apk files
+        flatpak-builder # Tool to build flatpaks from source
         go2nix
+        pkgconf # Package compiler and linker metadata toolkit
         solarus-quest-editor
         vgo2nix
         # games
         cataclysm-dda # A free, post apocalyptic, zombie infested rogue-like
         eidolon # A single TUI-based registry for drm-free, wine and steam games on linux, accessed through a rofi launch menu
+        EmptyEpsilon # Open source bridge simulator based on Artemis
         freedroidrpg # Isometric 3D RPG similar to game Diablo
         mindustry # A sandbox tower defense game
         solarus # A Zelda-like ARPG game engine
@@ -259,20 +282,55 @@ in { imports = [
         adwaita-qt # A style to bend Qt applications to look like they belong into GNOME Shell
         # misc/vim-plugins
         vimPlugins.vim-nix
+        # os-specific/linux
+        hdparm # A tool to get/set ATA/SATA drive parameters under Linux
+        kexectools # Tools related to the kexec Linux feature
+        psmisc # A set of small useful utilities that use the proc filesystem (such as fuser, killall and pstree)
         # servers/x11
         xorg.xinit
+        # shells
+        dash # A POSIX-compliant implementation of /bin/sh that aims to be as small as possible
+        mksh # MirBSD Korn Shell
+        rc # The Plan 9 shell
+        # tools/archivers
+        p7zip # A port of the 7-zip archiver
+        unzip # An extraction utility for archives compressed in .zip format
+        zip # Compressor/archiver for creating and modifying zipfiles
         # tools/audio
         pulsemixer # Cli and curses mixer for pulseaudio
         # tools/graphics
         grim # Grab images from a Wayland compositor
         # tools/misc
+        abduco # Allows programs to be run independently from its controlling terminal
+        cloc # A program that counts lines of source code
+        dvtm # Dynamic virtual terminal manager
+        entr # Run arbitrary commands when files change
+        file # A program that shows the type of files
+        mc # File Manager and User Shell for the GNU Project
+        ncdu # Disk usage analyzer with an ncurses interface
+        pfetch # A pretty system information tool written in POSIX sh
+        scanmem # Memory scanner for finding and poking addresses in executing processes
+        snore # sleep with feedback
+        xclip # Tool to access the X clipboard from a console application
         youtube-dl # Command-line tool to download videos from YouTube.com and other sites
         # tools/networking
+        bwm_ng # A small and simple console-based live network and disk io bandwidth monitor
+        curlFull # A command line tool for transferring files with URL syntax
+        tftp-hpa # TFTP tools - a lot of fixes on top of BSD TFTP
+        wget # Tool for retrieving files using HTTP, HTTPS, and FTP
         ytcc # Command Line tool to keep track of your favourite YouTube channels without signing up for a Google account
-        #tools/package-management
+        # tools/package-management
+        appimagekit # A tool to package desktop applications as AppImages
         protontricks # A simple wrapper for running Winetricks commands for Proton-enabled games
+        # tools/security
+        mkpasswd # Overfeatured front-end to crypt, from the Debian whois package
         # tools/system
+        htop # An interactive process viewer for Linux
+        hwinfo # Hardware detection tool from openSUSE
+        nq # Unix command line queue utility
         nvtop # A (h)top like like task monitor for NVIDIA GPUs
+        pciutils # A collection of programs for inspecting and manipulating configuration of PCI devices
+        plan9port # Plan 9 from User Space
         # tools/x11
         xdg-user-dirs # A tool to help manage well known user directories like the desktop folder and the music folder
       ];

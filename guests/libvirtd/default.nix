@@ -1,7 +1,5 @@
-# Libvirt Options
 { config, pkgs, lib, ... }:
-{
-  imports = [ ./.. ];
+{ imports = [ ./.. ];
 
   boot.kernelModules = [
     "vfio_virqfd"

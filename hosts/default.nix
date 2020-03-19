@@ -21,15 +21,8 @@
   environment.systemPackages = with pkgs; [ # Try to keep cli utils in this global config, we don't know if x11 or audio will be installed, or if this will be a server.
   # applications/editors
   vim # The most popular clone of the VI editor
-  # applications/misc
-  calcurse # A calendar and scheduling application for the command line
-  wtf # The personal information dashboard for your terminal
   # applications/version-management
   gitAndTools.gitFull # Distributed version control system
-  # development/libraries
-  libnotify # A library that sends desktop notifications to a notification daemon
-  #development/tools
-  pkgconf # Package compiler and linker metadata toolkit
   # os-specific/linux
   hdparm # A tool to get/set ATA/SATA drive parameters under Linux
   kexectools # Tools related to the kexec Linux feature
@@ -43,39 +36,30 @@
   unzip # An extraction utility for archives compressed in .zip format
   zip # Compressor/archiver for creating and modifying zipfiles
   # tools/misc
-  abduco # Allows programs to be run independently from its controlling terminal
   cloc # A program that counts lines of source code
-  dvtm # Dynamic virtual terminal manager
-  entr # Run arbitrary commands when files change
   file # A program that shows the type of files
   mc # File Manager and User Shell for the GNU Project
-  ncdu # Disk usage analyzer with an ncurses interface
-  pfetch # A pretty system information tool written in POSIX sh
-  scanmem # Memory scanner for finding and poking addresses in executing processes
   snore # sleep with feedback
   xclip # Tool to access the X clipboard from a console application
   # tools/networking
-  bwm_ng # A small and simple console-based live network and disk io bandwidth monitor
   curlFull # A command line tool for transferring files with URL syntax
-  #inetutils # Collection of common network programs
-  tftp-hpa # TFTP tools - a lot of fixes on top of BSD TFTP
   wget # Tool for retrieving files using HTTP, HTTPS, and FTP
-  # tools/package-management
-  appimagekit # A tool to package desktop applications as AppImages
   # tools/security
   mkpasswd # Overfeatured front-end to crypt, from the Debian whois package
   # tools/system
   htop # An interactive process viewer for Linux
-  hwinfo # Hardware detection tool from openSUSE
-  nq # Unix command line queue utility
   pciutils # A collection of programs for inspecting and manipulating configuration of PCI devices
-  plan9port # Plan 9 from User Space
   ];
 
   hardware.ksm.enable = true; # Kernel Same-Page Merging, can be suitable for more than Virtual Machine use, as it's useful for any application which generates many instances of the same data.
 
   location.provider = "geoclue2";
 
+  networking.extraHosts = ''
+    127.0.0.1 ${config.networking.hostName}
+    ::1 ${config.networking.hostName}
+  '';
+  
   nix.autoOptimiseStore = true;
   nix.gc.automatic = true;
   nix.gc.options = "--delete-older-than 30d";

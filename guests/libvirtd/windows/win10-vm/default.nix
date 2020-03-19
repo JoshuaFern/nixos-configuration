@@ -5,8 +5,7 @@ let
   isoextra = "/var/lib/libvirt/images/virtio-win.iso"; # VirtIO Drivers
   disk = "/var/lib/libvirt/images/win10-vm.qcow2"; # Disk Image
 in
-{
-  imports = [ ./.. ];
+{ imports = [ ./.. ];
 
   systemd.services.win10-vm = {
     after = [ "libvirtd.service" ];

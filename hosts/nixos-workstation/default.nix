@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
-{
-  imports = [ ./..
-    ../../users/jdf/default.nix # "jdf" User Oprtions
+{ imports = [ ./..
+    ../../users/jdf # "jdf" User Oprtions
   ];
   #boot.loader.efi.canTouchEfiVariables = true; # Allowed to modify EFI boot variables
   #boot.loader.generationsDir.copyKernels = true; # Copy necessary files into /boot so /nix/store is not needed by the boot loader
@@ -38,22 +37,6 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    # data/soundfonts
-    soundfont-fluid # Frank Wen's pro-quality GM/GS soundfont
-    # applications/audio
-    cmus # Small, fast and powerful console music player for Linux and *BSD
-    fluidsynth # Real-time software synthesizer based on the SoundFont 2 specifications
-    mikmod # Tracker music player for the terminal
-    moc # An ncurses console audio player designed to be powerful and easy to use
-    mpg123 # Fast console MPEG Audio Player and decoder library
-    schismtracker # Music tracker application, free reimplementation of Impulse Tracker
-    vorbis-tools # Extra tools for Ogg-Vorbis audio codec
-    # applications/misc
-    xst # Simple terminal fork that can load config from Xresources
-    # development/mobile
-    abootimg # Manipulate Android Boot Images
-    # development/tools
-    flatpak-builder # Tool to build flatpaks from source
     # tools/filesystems
     squashfsTools # Tool for creating and unpacking squashfs filesystems
     squashfuse # FUSE filesystem to mount squashfs archives
@@ -110,10 +93,6 @@
 
   networking.defaultGateway.address = "192.168.1.1";
   networking.enableIPv6 = false;
-  networking.extraHosts = ''
-    127.0.0.1 ${config.networking.hostName}
-    ::1 ${config.networking.hostName}
-  '';
   networking.hosts."0.0.0.0" = [ # Block ads / tracking
     # Firefox
     "location.services.mozilla.com"

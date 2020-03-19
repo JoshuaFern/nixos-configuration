@@ -9,4 +9,4 @@ in {
     shell = with pkgs; mksh;
     uid = 0;
   };
-} 
+}
