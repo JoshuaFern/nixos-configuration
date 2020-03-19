@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
-{ imports = [ ./.. ];
+{ config, pkgs, lib, ... }: {
+  imports = [ ./.. ];
   virtualisation.anbox.enable = true;
 }

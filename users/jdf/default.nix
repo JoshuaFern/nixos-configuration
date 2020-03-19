@@ -8,22 +8,26 @@ let
     "org.gtk.Gtk3theme.Adwaita-dark"
     "org.jdownloader.JDownloader" # JDownloader - Download management tool
   ];
-in { imports = [ ./..
-    (import(builtins.fetchGit{ref = "master";url = "https://github.com/rycee/home-manager";}){}).nixos # Home-Manger
+in {
+  imports = [
+    ./..
+    (import (builtins.fetchGit {
+      ref = "master";
+      url = "https://github.com/rycee/home-manager";
+    }) { }).nixos # Home-Manger
   ];
 
   home-manager.users.jdf = { config, pkgs, lib, ... }: {
     nixpkgs.config = {
       allowUnfree = true;
       packageOverrides = pkgs: {
-        nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
-          inherit pkgs;
-        };
+        nur = import (builtins.fetchTarball
+          "https://github.com/nix-community/NUR/archive/master.tar.gz") {
+            inherit pkgs;
+          };
       };
-      permittedInsecurePackages = [
-        "openssl-1.0.2u"
-      ];
-  };
+      permittedInsecurePackages = [ "openssl-1.0.2u" ];
+    };
 
     manual.html.enable = true;
 
@@ -32,7 +36,8 @@ in { imports = [ ./..
     programs.chromium.enable = true;
     programs.firefox = {
       enable = true; # Whether to enable Firefox
-      package = with pkgs; firefox-devedition-bin; # If state version ≥ 19.09 then this should be wrapped
+      package = with pkgs;
+        firefox-devedition-bin; # If state version ≥ 19.09 then this should be wrapped
       profiles.jdf = {
         #extraConfig = builtins.readFile (builtins.fetchurl "https://raw.githubusercontent.com/ghacksuserjs/ghacks-user.js/master/user.js"); # ghacks-user.js
         id = 0;
@@ -42,11 +47,14 @@ in { imports = [ ./..
           "browser.display.background_color" = "#000000";
           "browser.newtabpage.activity-stream.feeds.topsites" = false;
           "browser.newtabpage.activity-stream.showSponsored" = false;
-          "browser.newtabpage.activity-stream.telemetry.structuredIngestion" = false;
+          "browser.newtabpage.activity-stream.telemetry.structuredIngestion" =
+            false;
           "browser.newtabpage.activity-stream.telemetry.ut.events" = false;
-          "browser.sessionstore.max_tabs_undo" = 1; # Even with Firefox set to not remember history, your closed tabs are stored temporarily
+          "browser.sessionstore.max_tabs_undo" =
+            1; # Even with Firefox set to not remember history, your closed tabs are stored temporarily
           "browser.startup.firstrunSkipsHomepage" = false;
-          "browser.startup.homepage" = "https://www.startpage.com/do/mypage.pl?prfh=enable_stay_controlEEE0N1NsuggestionsEEE1N1Ngeo_mapEEE1N1Nwikipedia_iaEEE1N1Nother_iaEEE1N1Ndisable_open_in_new_windowEEE0N1Ndisable_video_family_filterEEE1N1Nenable_post_methodEEE1N1Nenable_proxy_safety_suggestEEE0N1Ndisable_family_filterEEE1N1Nconnect_to_serverEEEusN1NsslEEE1N1Nlanguage_uiEEEenglishN1NlanguageEEEenglishN1Nwt_unitEEEfahrenheitN1Nnum_of_resultsEEE20N1Nlang_homepageEEEs/nite/en/";
+          "browser.startup.homepage" =
+            "https://www.startpage.com/do/mypage.pl?prfh=enable_stay_controlEEE0N1NsuggestionsEEE1N1Ngeo_mapEEE1N1Nwikipedia_iaEEE1N1Nother_iaEEE1N1Ndisable_open_in_new_windowEEE0N1Ndisable_video_family_filterEEE1N1Nenable_post_methodEEE1N1Nenable_proxy_safety_suggestEEE0N1Ndisable_family_filterEEE1N1Nconnect_to_serverEEEusN1NsslEEE1N1Nlanguage_uiEEEenglishN1NlanguageEEEenglishN1Nwt_unitEEEfahrenheitN1Nnum_of_resultsEEE20N1Nlang_homepageEEEs/nite/en/";
           "browser.translation.detectLanguage" = false;
           "browser.translation.engine" = "";
           "browser.translation.neverForLanguages" = "en,de";
@@ -71,16 +79,20 @@ in { imports = [ ./..
           "privacy.clearOnShutdown.cookies" = false;
           "privacy.clearOnShutdown.openWindows" = false;
           "privacy.clearOnShutdown.siteSettings" = false;
-          "privacy.trackingprotection.cryptomining.enabled" = true; # Blocks CryptoMining
-          "privacy.trackingprotection.enabled" = false; # redundant if you are already using uBlock Origin 3rd party filters
-          "privacy.trackingprotection.fingerprinting.enabled" = true; # Blocks Fingerprinting
+          "privacy.trackingprotection.cryptomining.enabled" =
+            true; # Blocks CryptoMining
+          "privacy.trackingprotection.enabled" =
+            false; # redundant if you are already using uBlock Origin 3rd party filters
+          "privacy.trackingprotection.fingerprinting.enabled" =
+            true; # Blocks Fingerprinting
           "privacy.trackingprotection.origin_telemetry.enabled" = false;
           "security.app_menu.recordEventTelemetry" = false;
           "security.certerrors.recordEventTelemetry" = false;
           "security.identitypopup.recordEventTelemetry" = false;
           "security.protectionspopup.recordEventTelemetry" = false;
           "signon.generation.enabled" = false; # Disable password generation
-          "signon.management.page.breach-alerts.enabled" = false; # Disable password breach alerts
+          "signon.management.page.breach-alerts.enabled" =
+            false; # Disable password breach alerts
           "signon.rememberSignons" = false; # Disable built-in password manager
           "startup.homepage_welcome_url" = "";
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
@@ -145,7 +157,8 @@ in { imports = [ ./..
     programs.git.package = with pkgs; gitAndTools.gitFull;
     programs.git.userEmail = "JoshuaFern@ProtonMail.com";
     programs.git.userName = "Joshua Fern";
-    programs.home-manager.enable = true; # Let Home Manager install and manage itself
+    programs.home-manager.enable =
+      true; # Let Home Manager install and manage itself
     #programs.home-manager.path = "$HOME/git/home-manager";
     programs.mpv.config.profile = "gpu-hq";
     programs.mpv.enable = true;
@@ -162,12 +175,14 @@ in { imports = [ ./..
         flatpakActivation = ''
           echo [Flatpak] Start...
           ${pkgs.flatpak}/bin/flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-          ${pkgs.flatpak}/bin/flatpak install --user --noninteractive -y flathub ${toString flatpakFlathubPackages}
+          ${pkgs.flatpak}/bin/flatpak install --user --noninteractive -y flathub ${
+            toString flatpakFlathubPackages
+          }
           ${pkgs.flatpak}/bin/flatpak update --user -y
           echo [Flatpak] Done.
         '';
         xdgActivation = ''
-        ${pkgs.xdg-user-dirs}/bin/xdg-user-dirs-update
+          ${pkgs.xdg-user-dirs}/bin/xdg-user-dirs-update
         '';
       };
       packages = with pkgs; [
@@ -357,12 +372,37 @@ in { imports = [ ./..
     };
   };
   #home-manager.useGlobalPkgs = false; # Use the global pkgs instead of home-manager.users.<name>.nixpkgs
-  home-manager.useUserPackages = false; # Install packages to /etc/profiles instead of ~/.nix-profile
+  home-manager.useUserPackages =
+    false; # Install packages to /etc/profiles instead of ~/.nix-profile
 
   users.users.jdf = {
     createHome = true;
     description = "Joshua Fern";
-    extraGroups = [ "adbusers" "adm" "audio" "containers" "docker" "fuse" "games" "input" "jackaudio" "kvm" "lp" "libvirtd" "netdev" "networkmanager" "plugdev" "scanner" "sudo" "sys" "tty" "uucp" "vboxusers" "video" "wheel" ];
+    extraGroups = [
+      "adbusers"
+      "adm"
+      "audio"
+      "containers"
+      "docker"
+      "fuse"
+      "games"
+      "input"
+      "jackaudio"
+      "kvm"
+      "lp"
+      "libvirtd"
+      "netdev"
+      "networkmanager"
+      "plugdev"
+      "scanner"
+      "sudo"
+      "sys"
+      "tty"
+      "uucp"
+      "vboxusers"
+      "video"
+      "wheel"
+    ];
     hashedPassword = secrets.accountPassword.jdf;
     home = "/home/jdf";
     isNormalUser = true;

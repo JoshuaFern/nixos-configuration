@@ -1,4 +1,4 @@
-#               ,,
+# ,,
 # `7MN.   `7MF' db               .g8""8q.    .M"""bgd
 #   MMN.    M                  .dP'    `YM. ,MI    "Y
 #   M YMb   M `7MM  `7M'   `MF'dM'      `MM `MMb.
@@ -15,7 +15,13 @@
 # Nix Language: https://nixos.wiki/wiki/Nix_Expression_Language
 #               https://learnxinyminutes.com/docs/nix/
 { config, ... }:
-let ident = import ./ident.nix; # Your machine identifier/hostname, create the file yourself using the example
-in { imports = [ "/etc/nixos/hosts/${ident.hostname}/default.nix" ]; # Import our host configuration
-  networking.hostName = "${ident.hostname}"; # Set our hostname based on the identifier
+let
+  ident = import
+    ./ident.nix; # Your machine identifier/hostname, create the file yourself using the example
+in {
+  imports = [
+    "/etc/nixos/hosts/${ident.hostname}/default.nix"
+  ]; # Import our host configuration
+  networking.hostName =
+    "${ident.hostname}"; # Set our hostname based on the identifier
 }
