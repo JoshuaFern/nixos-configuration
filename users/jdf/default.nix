@@ -1,13 +1,13 @@
 { config, pkgs, ... }:
 let
-  secrets = import ../secrets.nix;
-  thisUser = "jdf";
   flatpakFlathubPackages = [
     "com.discordapp.Discord" # Discord - Chat client
     "org.freedesktop.Platform.Icontheme.Adwaita"
     "org.gtk.Gtk3theme.Adwaita-dark"
     "org.jdownloader.JDownloader" # JDownloader - Download management tool
   ];
+  secrets = import ../secrets.nix;
+  thisUser = "jdf";
 in {
   imports = [
     ./..
@@ -214,6 +214,24 @@ in {
           ${pkgs.xdg-user-dirs}/bin/xdg-user-dirs-update
         '';
       };
+      file = {
+        discord = {
+          executable = true;
+          target = ".local/bin/discord";
+          text =
+            "${pkgs.flatpak}/bin/flatpak run com.discordapp.Discord --ignore-certificate-errors";
+        };
+        gamemenu = {
+          executable = true;
+          target = ".local/bin/gamemenu";
+          text = "${pkgs.eidolon}/bin/eidolon menu";
+        };
+        steam = {
+          executable = true;
+          target = ".local/bin/steam";
+          text = "${pkgs.steam}/bin/steam -console -silent";
+        };
+      };
       packages = with pkgs; [
         # applications/audio
         cmus # Small, fast and powerful console music player for Linux and *BSD
@@ -221,6 +239,7 @@ in {
         mikmod # Tracker music player for the terminal
         moc # An ncurses console audio player designed to be powerful and easy to use
         mpg123 # Fast console MPEG Audio Player and decoder library
+        pianobar # A console front-end for Pandora.com
         schismtracker # Music tracker application, free reimplementation of Impulse Tracker
         vorbis-tools # Extra tools for Ogg-Vorbis audio codec
         # applications/graphics
@@ -230,9 +249,13 @@ in {
         waifu2x-converter-cpp # Improved fork of Waifu2X C++ using OpenCL and OpenCV
         # applications/misc
         calcurse # A calendar and scheduling application for the command line
+        cool-retro-term # Terminal emulator which mimics the old cathode display
         et # Minimal libnotify-based (egg) timer
-        lutris # Open Source gaming platform for GNU/Linux
+        freemind # Mind-mapping software
+        heimer # Simple cross-platform mind map and note-taking tool written in Qt
+        lutris-unwrapped # Open Source gaming platform for GNU/Linux
         mako # A lightweight Wayland notification daemon
+        minder # Mind-mapping application for Elementary OS
         mps-youtube # Terminal based YouTube player and downloader
         mupdf # Lightweight PDF, XPS, and E-book viewer and toolkit written in portable C
         nnn # Small ncurses-based file browser forked from noice
@@ -243,8 +266,10 @@ in {
         slmenu # A console dmenu-like tool
         tdrop # A Glorified WM-Independent Dropdown Creator
         treesheets # Free Form Data Organizer
+        vue # Visual Understanding Environment - mind mapping software
         vym # Mind-mapping software
         wtf # The personal information dashboard for your terminal
+        xmind # Mind-mapping software
         xst # Simple terminal fork that can load config from Xresources
         zathura # A highly customizable and functional PDF viewer
         # applications/networking
@@ -271,6 +296,8 @@ in {
         alpine # Console mail reader
         mutt-with-sidebar # A small but very powerful text-based mail client
         # applications/networking/p2p
+        qbittorrent # Featureful free software BitTorrent client
+        qbittorrent-nox # Featureful free software BitTorrent client
         transmission-remote-cli # Curses interface for the Transmission BitTorrent daemon
         # applications/networking/remote
         freerdp # A Remote Desktop Protocol Client
@@ -295,6 +322,8 @@ in {
         hicolor-icon-theme # Default fallback theme used by implementations of the icon theme specification
         # data/soundfonts
         soundfont-fluid # Frank Wen's pro-quality GM/GS soundfont
+        # desktops/enlightenment
+        enlightenment.terminology # Powerful terminal emulator based on EFL
         # desktops/gnome3
         gnome3.adwaita-icon-theme
         gnome-themes-extra
@@ -321,7 +350,7 @@ in {
         python38Packages.ueberzug # An alternative for w3mimgdisplay
         python38Packages.virtualenvwrapper # Enhancements to virtualenv
         # development/r-modules
-        rPackages.internetarchive #
+        rPackages.internetarchive
         # development/tools
         apktool # A tool for reverse engineering Android apk files
         flatpak-builder # Tool to build flatpaks from source
@@ -441,6 +470,7 @@ in {
         ytcc # Command Line tool to keep track of your favourite YouTube channels without signing up for a Google account
         # tools/package-management
         appimagekit # A tool to package desktop applications as AppImages
+        nox # Tools to make nix nicer to use
         protontricks # A simple wrapper for running Winetricks commands for Proton-enabled games
         # tools/security
         bitwarden # A secure and free password manager for all of your devices
@@ -472,6 +502,7 @@ in {
     xsession.windowManager.i3 = {
       config = {
         #assigns = "5: steam" = [{ class = "^Firefox$"; }];
+        menu = "PATH=$PATH:~/.local/bin ${pkgs.dmenu}/bin/dmenu_run";
         modifier = "Mod4"; # Windows-key modifier
         terminal = "${pkgs.xst}/bin/xst -e ${pkgs.zsh}/bin/zsh";
       };
