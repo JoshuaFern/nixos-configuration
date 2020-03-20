@@ -169,6 +169,35 @@ in {
       "update.channel" = "none";
       "[nix]"."editor.tabSize" = 2;
     };
+    programs.zsh.autocd = true;
+    programs.zsh.defaultKeymap = "viins";
+    programs.zsh.dotDir = "${config.xdg.configHome}/zsh";
+    programs.zsh.enable = true;
+    programs.zsh.enableAutosuggestions = true;
+    programs.zsh.envExtra = "";
+    programs.zsh.history = { };
+    programs.zsh.history.expireDuplicatesFirst = true;
+    programs.zsh.history.extended = true;
+    programs.zsh.history.ignoreDups = true;
+    programs.zsh.history.ignoreSpace = true;
+    programs.zsh.history.path = "${config.xdg.dataHome}/zsh/zsh_history";
+    programs.zsh.history.save = 10000;
+    programs.zsh.history.share = true;
+    programs.zsh.history.size = 10000;
+    programs.zsh.initExtra = "";
+    programs.zsh.initExtraBeforeCompInit = "";
+    programs.zsh.localVariables = { };
+    programs.zsh.loginExtra = "";
+    programs.zsh.logoutExtra = "";
+    programs.zsh.oh-my-zsh = { };
+    programs.zsh.oh-my-zsh.enable = true;
+    programs.zsh.oh-my-zsh.custom = "";
+    programs.zsh.oh-my-zsh.plugins = [ ];
+    programs.zsh.oh-my-zsh.theme = "";
+    programs.zsh.plugins = [ ];
+    programs.zsh.profileExtra = "";
+    programs.zsh.sessionVariables = { };
+    programs.zsh.shellAliases = { };
 
     home = {
       activation = {
@@ -209,6 +238,7 @@ in {
         noice # Small ncurses-based file browser
         ranger # File manager with minimalistic curses interface
         rtv # Browse Reddit from your Terminal
+        sc-im # SC-IM - Spreadsheet Calculator Improvised - SC fork
         slmenu # A console dmenu-like tool
         tdrop # A Glorified WM-Independent Dropdown Creator
         treesheets # Free Form Data Organizer
@@ -226,11 +256,15 @@ in {
         # applications/networking/instant-messengers
         weechat # A fast, light and extensible chat client
         # applications/networking/mailreaders
+        alpine # Console mail reader
         mutt-with-sidebar # A small but very powerful text-based mail client
         # applications/networking/p2p
         transmission-remote-cli # Curses interface for the Transmission BitTorrent daemon
         # applications/networking/remote
         freerdp # A Remote Desktop Protocol Client
+        # applications/office
+        libreoffice-fresh # Comprehensive, professional-quality productivity suite, a variant of openoffice.org
+        wordgrinder # Text-based word processor
         # applications/radio
         aldo # Morse code training program
         unixcw # sound characters as Morse code on the soundcard or console speaker
@@ -271,8 +305,9 @@ in {
         # development/python-modules
         python38Packages.nix-prefetch-github # Prefetch sources from github
         python38Packages.pywal # Generate and change colorschemes on the fly. A 'wal' rewrite in Python 3.
-        python38Packages.virtualenvwrapper # Enhancements to virtualenv
         python38Packages.speedtest-cli # Command line interface for testing internet bandwidth using speedtest.net
+        python38Packages.ueberzug # An alternative for w3mimgdisplay
+        python38Packages.virtualenvwrapper # Enhancements to virtualenv
         # development/tools
         apktool # A tool for reverse engineering Android apk files
         flatpak-builder # Tool to build flatpaks from source
@@ -317,6 +352,7 @@ in {
         grim # Grab images from a Wayland compositor
         # tools/misc
         abduco # Allows programs to be run independently from its controlling terminal
+        byobu # Text-based window manager and terminal multiplexer
         cloc # A program that counts lines of source code
         dvtm # Dynamic virtual terminal manager
         entr # Run arbitrary commands when files change
@@ -338,6 +374,8 @@ in {
         appimagekit # A tool to package desktop applications as AppImages
         protontricks # A simple wrapper for running Winetricks commands for Proton-enabled games
         # tools/security
+        bitwarden # A secure and free password manager for all of your devices
+        bitwarden-cli # A secure and free password manager for all of your devices.
         mkpasswd # Overfeatured front-end to crypt, from the Debian whois package
         # tools/system
         htop # An interactive process viewer for Linux
