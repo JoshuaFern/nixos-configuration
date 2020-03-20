@@ -171,7 +171,7 @@ in {
     };
     programs.zsh.autocd = true;
     programs.zsh.defaultKeymap = "viins";
-    programs.zsh.dotDir = "${config.xdg.configHome}/zsh";
+    programs.zsh.dotDir = ".config/zsh";
     programs.zsh.enable = true;
     programs.zsh.enableAutosuggestions = true;
     programs.zsh.envExtra = "";
@@ -226,11 +226,12 @@ in {
         # applications/graphics
         dia # Gnome Diagram drawing software
         imv # Simple X11/Wayland Image Viewer
-        nur.repos.joshuafern.steamgrid
+        nur.repos.joshuafern.steamgrid # Downloads images to fill your Steam grid view
         waifu2x-converter-cpp # Improved fork of Waifu2X C++ using OpenCL and OpenCV
         # applications/misc
         calcurse # A calendar and scheduling application for the command line
         et # Minimal libnotify-based (egg) timer
+        lutris # Open Source gaming platform for GNU/Linux
         mako # A lightweight Wayland notification daemon
         mps-youtube # Terminal based YouTube player and downloader
         mupdf # Lightweight PDF, XPS, and E-book viewer and toolkit written in portable C
@@ -248,11 +249,22 @@ in {
         zathura # A highly customizable and functional PDF viewer
         # applications/networking
         hydroxide # A third-party, open-source ProtonMail bridge
+        wayback_machine_downloader # Download websites from the Internet Archive Wayback Machine
         # applications/networking/browsers
+        brave # Privacy-oriented browser for Desktop and Laptop computers
+        browsh # A fully-modern text-based browser, rendering to TTY and browsers
         elinks # Full-featured text-mode web browser
         links2 # A small browser with some graphics support
         lynx # A text-mode web browser
+        palemoon # An Open Source, Goanna-based web browser focusing on efficiency and customization
+        qtchan # 4chan browser in qt5
+        qutebrowser # Keyboard-focused browser with a minimal GUI
+        surf # A simple web browser based on WebKit/GTK
+        tor-browser-bundle-bin # Tor Browser Bundle built by torproject.org
+        vimb # A Vim-like browser
         w3m # A text-mode web browser
+        # applications/networking/gopher
+        gopher # A ncurses gopher client
         # applications/networking/instant-messengers
         weechat # A fast, light and extensible chat client
         # applications/networking/mailreaders
@@ -301,20 +313,22 @@ in {
         # development/mobile
         abootimg # Manipulate Android Boot Images
         imgpatchtools # Tools to manipulate Android OTA archives
-        nur.repos.joshuafern.qdl
+        nur.repos.joshuafern.qdl # Qualcomm Download
         # development/python-modules
         python38Packages.nix-prefetch-github # Prefetch sources from github
         python38Packages.pywal # Generate and change colorschemes on the fly. A 'wal' rewrite in Python 3.
         python38Packages.speedtest-cli # Command line interface for testing internet bandwidth using speedtest.net
         python38Packages.ueberzug # An alternative for w3mimgdisplay
         python38Packages.virtualenvwrapper # Enhancements to virtualenv
+        # development/r-modules
+        rPackages.internetarchive #
         # development/tools
         apktool # A tool for reverse engineering Android apk files
         flatpak-builder # Tool to build flatpaks from source
-        go2nix
+        go2nix # Go apps packaging for Nix
         pkgconf # Package compiler and linker metadata toolkit
-        solarus-quest-editor
-        vgo2nix
+        solarus-quest-editor # The editor for the Zelda-like ARPG game engine, Solarus
+        vgo2nix # Convert go.mod files to nixpkgs buildGoPackage compatible deps.nix files
         # games
         cataclysm-dda # A free, post apocalyptic, zombie infested rogue-like
         eidolon # A single TUI-based registry for drm-free, wine and steam games on linux, accessed through a rofi launch menu
@@ -327,12 +341,57 @@ in {
         # misc
         scrcpy # Display and control Android devices over USB or TCP/IP
         # misc/emulators
-        nur.repos.joshuafern.dosbox-staging
+        ataripp # An enhanced, cycle-accurated Atari emulator
+        atari800 # An Atari 8-bit emulator
+        attract-mode # A frontend for arcade cabinets and media PCs
+        blastem # The fast and accurate Genesis emulator
+        caprice32 # A complete emulation of CPC464, CPC664 and CPC6128
+        ccemux # A modular ComputerCraft emulator
+        citra # An open-source emulator for the Nintendo 3DS
+        desmume # An open-source Nintendo DS emulator
+        dolphinEmuMaster # Gamecube/Wii/Triforce emulator for x86_64 and ARMv8
+        nur.repos.joshuafern.dosbox-staging # A modernized DOS emulator
+        emulationstation # A flexible emulator front-end supporting keyboardless navigation and custom system themes
+        epsxe # Enhanced PSX (PlayStation 1) emulator
+        fceux # A Nintendo Entertainment System (NES) Emulator
+        firebird-emu # Third-party multi-platform emulator of the ARM-based TI-Nspire™ calculators
+        fsuae # An accurate, customizable Amiga Emulator
+        fuse-emulator # ZX Spectrum emulator
+        gxemul # Gavare's experimental emulator
+        hatari # Atari ST/STE/TT/Falcon emulator
+        higan # An open-source, cycle-accurate Nintendo multi-system emulator
+        kega-fusion # Sega SG1000, SC3000, SF7000, Master System, Game Gear, Genesis/Megadrive, SVP, Pico, SegaCD/MegaCD and 32X emulator
+        libdsk # A library for accessing discs and disc image files
+        mame # Is a multi-purpose emulation framework
+        mednafen # A portable, CLI-driven, SDL+OpenGL-based, multi-system emulator
+        mednaffe # GTK-based frontend for mednafen emulator
+        mgba # A modern GBA emulator with a focus on accuracy
+        mupen64plus # A Nintendo 64 Emulator
+        nestopia # NES emulator with a focus on accuracy
+        openmsx # A MSX emulator
+        pcsx2 # Playstation 2 emulator
+        pcsxr # Playstation 1 emulator
+        ppsspp # A PSP emulator for Android, Windows, Mac and Linux, written in C++
+        retrofe # A frontend for arcade cabinets and media PCs
+        rpcs3 # PS3 emulator/debugger
+        snes9x-gtk # Super Nintendo Entertainment System (SNES) emulator
+        stella # An open-source Atari 2600 VCS emulator
+        uae # Ultimate/Unix/Unusable Amiga Emulator
+        vbam # A merge of the original Visual Boy Advance forks
+        vice # Commodore 64, 128 and other emulators
+        winePackages.fonts # Microsoft replacement fonts by the Wine project
+        winePackages.staging # An Open Source implementation of the Windows API on top of X, OpenGL, and Unix
+        winetricks # A script to install DLLs needed to work around problems in Wine
+        wxmupen64plus # GUI for the Mupen64Plus 2.0 emulato
+        xcpc # A portable Amstrad CPC 464/664/6128 emulator written in C
+        yabause # An open-source Sega Saturn emulator
+        zsnes # A Super Nintendo Entertainment System Emulator
         # misc/themes
         adwaita-qt # A style to bend Qt applications to look like they belong into GNOME Shell
         # misc/vim-plugins
         vimPlugins.vim-nix
         # os-specific/linux
+        btfs # A bittorrent filesystem based on FUSE
         hdparm # A tool to get/set ATA/SATA drive parameters under Linux
         kexectools # Tools related to the kexec Linux feature
         psmisc # A set of small useful utilities that use the proc filesystem (such as fuser, killall and pstree)
@@ -348,8 +407,18 @@ in {
         zip # Compressor/archiver for creating and modifying zipfiles
         # tools/audio
         pulsemixer # Cli and curses mixer for pulseaudio
+        # tools/filesystems
+        boxfs # FUSE file system for box.com accounts
+        gitfs # A FUSE filesystem that fully integrates with git
+        httpfs2 # HTTPFS2, a FUSE-based HTTP file system for Linux
+        mergerfs # A FUSE based union filesystem
+        smbnetfs # A FUSE FS for mounting Samba shares
+        sshfs # FUSE-based filesystem that allows remote filesystems to be mounted over SSH
+        vmfs-tools # FUSE-based VMFS (vmware) file system tools
+        wdfs # User-space filesystem that allows to mount a webdav share
         # tools/graphics
         grim # Grab images from a Wayland compositor
+        scrot # A command-line screen capture utility
         # tools/misc
         abduco # Allows programs to be run independently from its controlling terminal
         byobu # Text-based window manager and terminal multiplexer
@@ -404,7 +473,7 @@ in {
       config = {
         #assigns = "5: steam" = [{ class = "^Firefox$"; }];
         modifier = "Mod4"; # Windows-key modifier
-        terminal = "${pkgs.xst}/bin/xst -e ${pkgs.mksh}/bin/mksh";
+        terminal = "${pkgs.xst}/bin/xst -e ${pkgs.zsh}/bin/zsh";
       };
       enable = true;
     };
@@ -444,7 +513,7 @@ in {
     hashedPassword = secrets.accountPassword.jdf;
     home = "/home/jdf";
     isNormalUser = true;
-    shell = with pkgs; mksh;
+    shell = with pkgs; dash;
     uid = 1000;
   };
 }
