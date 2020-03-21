@@ -433,8 +433,8 @@ in {
         eidolon # A single TUI-based registry for drm-free, wine and steam games on linux, accessed through a rofi launch menu
         EmptyEpsilon # Open source bridge simulator based on Artemis
         freeciv # Multiplayer (or single player), turn-based strategy game
-        freeciv_gtk # Multiplayer (or single player), turn-based strategy game
-        freeciv_qt # Multiplayer (or single player), turn-based strategy game
+        #freeciv_gtk # Multiplayer (or single player), turn-based strategy game
+        #freeciv_qt # Multiplayer (or single player), turn-based strategy game
         freedroidrpg # Isometric 3D RPG similar to game Diablo
         freesweep # A console minesweeper-style game written in C for Unix-like systems
         hyperrogue # A roguelike game set in hyperbolic geometry
