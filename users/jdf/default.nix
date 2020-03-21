@@ -245,6 +245,7 @@ in {
         # applications/graphics
         dia # Gnome Diagram drawing software
         imv # Simple X11/Wayland Image Viewer
+        inkscape # Vector graphics editor
         nur.repos.joshuafern.steamgrid # Downloads images to fill your Steam grid view
         waifu2x-converter-cpp # Improved fork of Waifu2X C++ using OpenCL and OpenCV
         # applications/misc
@@ -258,17 +259,20 @@ in {
         minder # Mind-mapping application for Elementary OS
         mps-youtube # Terminal based YouTube player and downloader
         mupdf # Lightweight PDF, XPS, and E-book viewer and toolkit written in portable C
+        nix-tour # 'the tour of nix' from nixcloud.io/tour as offline version
         nnn # Small ncurses-based file browser forked from noice
         noice # Small ncurses-based file browser
         ranger # File manager with minimalistic curses interface
         rtv # Browse Reddit from your Terminal
         sc-im # SC-IM - Spreadsheet Calculator Improvised - SC fork
         slmenu # A console dmenu-like tool
+        styx # Nix based static site generator
         tdrop # A Glorified WM-Independent Dropdown Creator
         treesheets # Free Form Data Organizer
         vue # Visual Understanding Environment - mind mapping software
         vym # Mind-mapping software
         wtf # The personal information dashboard for your terminal
+        xfe # MS-Explorer like file manager for X
         xmind # Mind-mapping software
         xst # Simple terminal fork that can load config from Xresources
         zathura # A highly customizable and functional PDF viewer
@@ -315,59 +319,153 @@ in {
         # applications/virtualization
         looking-glass-client # A KVM Frame Relay (KVMFR) implementation
         # build-support
-        appimage-run
+        appimage-run #
+        iconConvTools # Tools for icon conversion specific to nix package manager
+        nix-template-rpm # Create templates of nix expressions from RPM .spec files
         #steam-run
-        steam-run-native
+        steam-run-native #
+        # build-support/rust
+        carnix #
+        toml2nix #
         # data/icons
         hicolor-icon-theme # Default fallback theme used by implementations of the icon theme specification
+        # data/misc
+        nixos-icons #
         # data/soundfonts
         soundfont-fluid # Frank Wen's pro-quality GM/GS soundfont
         # desktops/enlightenment
         enlightenment.terminology # Powerful terminal emulator based on EFL
         # desktops/gnome3
-        gnome3.adwaita-icon-theme
-        gnome-themes-extra
+        gnome3.adwaita-icon-theme #
+        gnome-themes-extra #
         # development/compilers
+        egg2nix # Generate nix-expression from CHICKEN scheme eggs
+        crystal2nix # Utility to convert Crystal's shard.lock files to a Nix file
         go # The Go Programming language
         mono # Cross platform, open source .NET development framework
         # development/haskell-modules
-        nixfmt # An opinionated formatter for Nix
-        shellcheck # Shell script analysis tool
+        #haskellPackages.arion-compose # Run docker-compose with help from Nix/NixOS
+        #haskellPackages.autonix-deps # Library for Nix expression dependency generation
+        #haskellPackages.autonix-deps-kf5 # Generate dependencies for KDE 5 Nix expressions
+        #haskellPackages.bricks # Bricks is a lazy functional language based on Nix
+        haskellPackages.cabal2nix # Convert Cabal files into Nix build instructions
+        haskellPackages.cachix # Command line client for Nix binary cache hosting https://cachix.org
+        #haskellPackages.dhall-nix # Dhall to Nix compiler
+        haskellPackages.distribution-nixpkgs # Types and functions to manipulate the Nixpkgs distribution
+        haskellPackages.elm2nix # Turn your Elm project into buildable Nix project
+        #haskellPackages.funflow-nix # Utility functions for using funflow with nix
+        #haskellPackages.haskell-overridez # Manage nix overrides for haskell packages
+        #haskellPackages.hnix # Haskell implementation of the Nix language
+        #haskellPackages.hnix-store-core # Core effects for interacting with the Nix store
+        #haskellPackages.hnix-store-remote # Remote hnix store
+        #haskellPackages.hocker # Interact with the docker registry and generate nix build instructions
+        #haskellPackages.jenkinsPlugins2nix # Generate nix for Jenkins plugins
+        haskellPackages.language-nix # Data types and functions to represent the Nix language
+        haskellPackages.libnix # Bindings to the nix package manager
+        haskellPackages.niv # Easy dependency management for Nix projects
+        #haskellPackages.nix-delegate # Convenient utility for distributed Nix builds
+        #haskellPackages.nix-deploy # Deploy Nix-built software to a NixOS machine
+        haskellPackages.nix-derivation # Parse and render *.drv files
+        #haskellPackages.nix-diff # Explain why two Nix derivations differ
+        #haskellPackages.nix-eval # Evaluate Haskell expressions using Nix to get packages
+        #haskellPackages.nix-freeze-tree # Convert a tree of files into fixed-output derivations
+        haskellPackages.nix-paths # Knowledge of Nix's installation directories
+        #haskellPackages.nix-tools # cabal/stack to nix translation tools
+        haskellPackages.nixfmt # An opinionated formatter for Nix
+        #haskellPackages.nixfromnpm # Generate nix expressions from npm packages
+        #haskellPackages.nixpkgs-update # Tool for semi-automatic updating of nixpkgs repository
+        haskellPackages.ShellCheck # Shell script analysis tool
+        #haskellPackages.simple-nix # Simple parsing/pretty printing for Nix expressions
+        #haskellPackages.stack2nix # Convert stack.yaml files into Nix build instructions
+        #haskellPackages.stackage2nix # Convert Stack files into Nix build instructions
+        #haskellPackages.styx # A generator of nix files
+        #haskellPackages.tateti-tateti # Meta tic-tac-toe ncurses game
         # development/interpreters
         luajit # High-performance JIT compiler for Lua 5.1
+        #nix-exec # Run programs defined in nix expressions
         python2Full # A high-level dynamically-typed programming language
         python3Full # A high-level dynamically-typed programming language
         # development/libraries
         libnotify # A library that sends desktop notifications to a notification daemon
+        nix-plugins # Collection of miscellaneous plugins for the nix expression language
         # development/mobile
         abootimg # Manipulate Android Boot Images
         imgpatchtools # Tools to manipulate Android OTA archives
         nur.repos.joshuafern.qdl # Qualcomm Download
         # development/python-modules
         python38Packages.nix-prefetch-github # Prefetch sources from github
+        #python38Packages.nixpart # NixOS storage manager/partitioner
+        #python38Packages.nixpkgs-pytools # Tools for removing the tedious nature of creating nixpkgs derivations
         python38Packages.pywal # Generate and change colorschemes on the fly. A 'wal' rewrite in Python 3.
         python38Packages.speedtest-cli # Command line interface for testing internet bandwidth using speedtest.net
         python38Packages.ueberzug # An alternative for w3mimgdisplay
         python38Packages.virtualenvwrapper # Enhancements to virtualenv
         # development/r-modules
-        rPackages.internetarchive
+        rPackages.internetarchive #
+        # development/ruby-modules
+        bundix # Creates Nix packages from Gemfiles
         # development/tools
         apktool # A tool for reverse engineering Android apk files
+        dep2nix # Convert `Gopkg.lock` files from golang dep into `deps.nix`
         flatpak-builder # Tool to build flatpaks from source
         go2nix # Go apps packaging for Nix
         pkgconf # Package compiler and linker metadata toolkit
+        pypi2nix # 
+        rnix-lsp # A work-in-progress language server for Nix, with syntax checking and basic completion
         solarus-quest-editor # The editor for the Zelda-like ARPG game engine, Solarus
         vgo2nix # Convert go.mod files to nixpkgs buildGoPackage compatible deps.nix files
+        yarn2nix # 
+        # development/tools/analysis
+        #nix-linter # Linter for Nix(pkgs), based on hnix
+        # development/tools/misc
+        #hydra # Nix-based continuous build system
+        luajitPackages.luarocks-nix # A package manager for Lua
+        nixbang # A special shebang to run scripts in a nix-shell
         # games
+        _2048-in-terminal # Animated console version of the 2048 game
+        azimuth # A metroidvania game using only vectorial graphic
+        banner # Print large banners to ASCII terminals
+        braincurses # A version of the classic game Mastermind
+        #bsdgames # Ports of all the games from NetBSD-current that are free
         cataclysm-dda # A free, post apocalyptic, zombie infested rogue-like
+        devilutionx # Diablo build for modern operating systems
+        dwarf-fortress # A single-player fantasy game with a randomly generated adventure world
         eidolon # A single TUI-based registry for drm-free, wine and steam games on linux, accessed through a rofi launch menu
         EmptyEpsilon # Open source bridge simulator based on Artemis
+        freeciv # Multiplayer (or single player), turn-based strategy game
+        freeciv_gtk # Multiplayer (or single player), turn-based strategy game
+        freeciv_qt # Multiplayer (or single player), turn-based strategy game
         freedroidrpg # Isometric 3D RPG similar to game Diablo
+        freesweep # A console minesweeper-style game written in C for Unix-like systems
+        hyperrogue # A roguelike game set in hyperbolic geometry
+        icbm3d # 3D vector-based clone of the atari game Missile Command
+        lgogdownloader # Unofficial downloader to GOG.com for Linux users. It uses the same API as the official GOGDownloader
+        liberal-crime-squad # A humorous politically themed ncurses game
+        #lincity_ng # City building game
+        minetest # Infinite-world block sandbox game
         mindustry # A sandbox tower defense game
+        multimc # A free, open source launcher for Minecraft
+        nudoku # An ncurses based sudoku game
+        openra # Open-source re-implementation of Westwood Studios' 2D Command and Conquer games
+        openspades # A compatible client of Ace of Spades 0.75
+        openttd # Open source clone of the Microprose game "Transport Tycoon Deluxe"
+        #privateer # Adventure space flight simulation computer game
+        rogue # The final version of the original Rogue game developed for the UNIX operating system
+        scummvm # 	Program to run certain classic graphical point-and-click adventure games (such as Monkey Island)
+        shattered-pixel-dungeon # Traditional roguelike game with pixel-art graphics and simple interface
         solarus # A Zelda-like ARPG game engine
         steam # A digital distribution platform
         steamcmd # Steam command-line tools
+        vectoroids # Clone of the classic arcade game Asteroids by Atari
+        vitetris # Terminal-based Tetris clone by Victor Nilsson
+        xonotic # A free fast-paced first-person shooter
+        zeroad # A free, open-source game of ancient warfare
+        # maintainers/scripts
+        nix-generate-from-cpan # Utility to generate a Nix expression for a Perl package from CPAN
+        nixpkgs-lint # A utility for Nixpkgs contributors to check Nixpkgs for common errors
         # misc
+        documentation-highlighter # Highlight.js sources for the Nix Ecosystem's documentation.
+        foldingathome # Folding@home distributed computing client
         scrcpy # Display and control Android devices over USB or TCP/IP
         # misc/emulators
         ataripp # An enhanced, cycle-accurated Atari emulator
@@ -418,16 +516,20 @@ in {
         # misc/themes
         adwaita-qt # A style to bend Qt applications to look like they belong into GNOME Shell
         # misc/vim-plugins
-        vimPlugins.vim-nix
+        vimPlugins.vim-nix #
         # os-specific/linux
         btfs # A bittorrent filesystem based on FUSE
         hdparm # A tool to get/set ATA/SATA drive parameters under Linux
         kexectools # Tools related to the kexec Linux feature
         psmisc # A set of small useful utilities that use the proc filesystem (such as fuser, killall and pstree)
+        unstick # Silently eats chmod commands forbidden by Nix
+        # servers/http
+        nix-binary-cache # A set of scripts to serve the Nix store as a binary cache
         # servers/x11
-        xorg.xinit
+        xorg.xinit #
         # shells
         dash # A POSIX-compliant implementation of /bin/sh that aims to be as small as possible
+        ksh # KornShell Command And Programming Language
         mksh # MirBSD Korn Shell
         rc # The Plan 9 shell
         # tools/archivers
@@ -455,6 +557,7 @@ in {
         dvtm # Dynamic virtual terminal manager
         entr # Run arbitrary commands when files change
         file # A program that shows the type of files
+        lorri # Your project's nix-env
         mc # File Manager and User Shell for the GNU Project
         ncdu # Disk usage analyzer with an ncurses interface
         pfetch # A pretty system information tool written in POSIX sh
@@ -468,14 +571,45 @@ in {
         tftp-hpa # TFTP tools - a lot of fixes on top of BSD TFTP
         wget # Tool for retrieving files using HTTP, HTTPS, and FTP
         ytcc # Command Line tool to keep track of your favourite YouTube channels without signing up for a Google account
+        # tools/nix
+        nix-info #
+        nix-query-tree-viewer # GTK viewer for the output of `nix store --query --tree`
+        nix-script # A shebang for running inside nix-shell.
+        nix-store-gcs-proxy # A HTTP nix store that proxies requests to Google Storage
+        nixdoc # Generate documentation for Nix functions
+        nixos-generators # Collection of image builders
+        nixpkgs-fmt # Nix code formatter for nixpkgs
         # tools/package-management
         appimagekit # A tool to package desktop applications as AppImages
+        morph # Morph is a NixOS host manager written in Golang.
+        niff # A program that compares two Nix expressions and determines which attributes changed
+        nix # Powerful package manager that makes package management reliable and reproducible
+        nix-bundle # Create bundles from Nixpkgs attributes
+        nix-du # A tool to determine which gc-roots take space in your nix store
+        nix-index # A files database for nixpkgs
+        nix-pin # nixpkgs development utility
+        nix-prefetch # Prefetch any fetcher function call, e.g. package sources
+        nix-prefetch-scripts # Collection of all the nix-prefetch-* scripts which may be used to obtain source hashes
+        nix-serve # A utility for sharing a Nix store as a binary cache
+        nix-top # Tracks what nix is building
+        nix-universal-prefetch # Uses nixpkgs fetchers to figure out hashes
+        nix-update-source # Utility to automate updating of nix derivation sources
+        nixops # NixOS cloud provisioning and deployment tool
+        nixops-dns # DNS server for resolving NixOps machines
+        nixpkgs-review # Review pull-requests on https://github.com/NixOS/nixpkgs
+        nixui # NodeWebkit user interface for Nix
         nox # Tools to make nix nicer to use
         protontricks # A simple wrapper for running Winetricks commands for Proton-enabled games
+        # tools/package-management/disnix
+        disnix # A Nix-based distributed service deployment tool
+        disnixos # Provides complementary NixOS infrastructure deployment to Disnix
+        DisnixWebService # A SOAP interface and client for Disnix
+        dysnomia # Automated deployment of mutable components and services for Disnix
         # tools/security
         bitwarden # A secure and free password manager for all of your devices
         bitwarden-cli # A secure and free password manager for all of your devices.
         mkpasswd # Overfeatured front-end to crypt, from the Debian whois package
+        vulnix # NixOS vulnerability scanner
         # tools/system
         htop # An interactive process viewer for Linux
         hwinfo # Hardware detection tool from openSUSE
@@ -483,8 +617,14 @@ in {
         nvtop # A (h)top like like task monitor for NVIDIA GPUs
         pciutils # A collection of programs for inspecting and manipulating configuration of PCI devices
         plan9port # Plan 9 from User Space
+        stress-ng # Stress test a computer system
+        # tools/wayland
+        ydotool # Generic Linux command-line automation tool
         # tools/x11
         xdg-user-dirs # A tool to help manage well known user directories like the desktop folder and the music folder
+        xdg_utils # A set of command line tools that assist applications with a variety of desktop integration tasks
+        xdotool # Fake keyboard/mouse input, window management, and more
+        xkbvalidate # NixOS tool to validate X keyboard configuration
       ];
       sessionVariables = {
         #BROWSER = "firefox";
