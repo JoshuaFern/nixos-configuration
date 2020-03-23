@@ -1,5 +1,5 @@
 { pkgs, ... }:
-let secrets = import ../secrets.nix;
+let secrets = import ./secrets.nix;
 in {
   users.users.root = {
     createHome = false;

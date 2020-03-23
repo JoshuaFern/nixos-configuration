@@ -1,12 +1,12 @@
 { config, pkgs, ... }:
 let
-  flatpakFlathubPackages = [
-    "com.discordapp.Discord" # Discord - Chat client
-    "org.freedesktop.Platform.Icontheme.Adwaita"
-    "org.gtk.Gtk3theme.Adwaita-dark"
-    "org.jdownloader.JDownloader" # JDownloader - Download management tool
+  flathubApps = [
+    "org.freedesktop.Platform.Icontheme.Adwaita" # Adwaita Icons
+    "org.gtk.Gtk3theme.Adwaita-dark" # Adwaita Theme
+    "com.discordapp.Discord" # Discord: Chat client
+    "org.jdownloader.JDownloader" # JDownloader: Download management tool
   ];
-  secrets = import ../secrets.nix;
+  secrets = import ./secrets.nix;
   thisUser = "jdf";
 in {
   imports = [
@@ -160,7 +160,21 @@ in {
     programs.home-manager.enable =
       true; # Let Home Manager install and manage itself
     #programs.home-manager.path = "$HOME/git/home-manager";
-    programs.mpv.config.profile = "gpu-hq";
+    programs.mpv.config = {
+      deinterlace = "yes";
+      dscale = "mitchell"; # This filter is very good at downscaling
+      fullscreen = "yes";
+      hwdec = "auto-safe";
+      hwdec-codecs = "all";
+      interpolation = "yes";
+      msg-level = "vo=fatal"; # Prevent harmless warnings/errors when using hardware decoding
+      scale = "ewa_lanczossharp"; # If your hardware can run it, this is probably what you should use by default.
+      scaler-resizes-only = "yes"; # Disable the scaler if the video image is not resized.
+      tscale = "oversample"; # This filter is good at temporal interpolation
+      video-sync = "display-vdrop"; # Drop or repeat video frames to compensate desyncing video.
+      vo = "gpu"; # Enable hardware acceleration.
+      ytdl-format = "bestvideo[height<=?720][fps<=?30][vcodec!=?vp9]+bestaudio/best";
+    };
     programs.mpv.enable = true;
     programs.rofi.enable = true;
     programs.vscode.enable = true;
@@ -205,7 +219,7 @@ in {
           echo [Flatpak] Start...
           ${pkgs.flatpak}/bin/flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
           ${pkgs.flatpak}/bin/flatpak install --user --noninteractive -y flathub ${
-            toString flatpakFlathubPackages
+            toString flathubApps
           }
           ${pkgs.flatpak}/bin/flatpak update --user -y
           echo [Flatpak] Done.
@@ -215,21 +229,53 @@ in {
         '';
       };
       file = {
-        discord = {
+        # ~/
+        # ~/.local/bin
+        discord_runner = {
           executable = true;
-          target = ".local/bin/discord";
+          target = ".local/bin/discord_run";
           text =
-            "${pkgs.flatpak}/bin/flatpak run com.discordapp.Discord --ignore-certificate-errors";
+            "${pkgs.flatpak}/bin/flatpak run com.discordapp.Discord --ignore-certificate-errors"; # Needed to work around certificate bug.
         };
         gamemenu = {
           executable = true;
           target = ".local/bin/gamemenu";
           text = "${pkgs.eidolon}/bin/eidolon menu";
         };
-        steam = {
+        steam_bp = { # Steam Big Picture
           executable = true;
-          target = ".local/bin/steam";
+          target = ".local/bin/steam_bp";
+          text = "${pkgs.steam}/bin/steam -console -silent -tenfoot";
+        };
+        steam_dev = { # Steam Skin Development
+          executable = true;
+          target = ".local/bin/steam_dev";
+          text = "${pkgs.steam}/bin/steam -console -silent -developer";
+        };
+        steam_fixbeta = { # Steam Clear Beta
+          executable = true;
+          target = ".local/bin/steam_fixbeta";
+          text = "${pkgs.steam}/bin/steam -console -silent -clearbeta";
+        };
+        steam_heavy = { # Steam
+          executable = true;
+          target = ".local/bin/steam_heavy";
           text = "${pkgs.steam}/bin/steam -console -silent";
+        };
+        steam_light = { # Steam No Browser
+          executable = true;
+          target = ".local/bin/steam_light";
+          text = "${pkgs.steam}/bin/steam -console -silent -no-browser -compact";
+        };
+        steamgrid_runner = {
+          executable = true;
+          target = ".local/bin/steamgrid_run";
+          text = "${pkgs.nur.repos.joshuafern.steamgrid}/bin/steamgrid -igdb ${secrets.apiKey.igdb} -steamgriddb ${secrets.apiKey.steamgriddb} -types animated,static -styles alternate,blurred,white_logo,material";
+        };
+        ytcc_autoplay = {
+          executable = true;
+          target = ".local/bin/ytcc_autoplay";
+          text = "${pkgs.ytcc}/bin/ytcc -y";
         };
       };
       packages = with pkgs; [
@@ -641,7 +687,7 @@ in {
     xsession.enable = true;
     xsession.windowManager.i3 = {
       config = {
-        #assigns = "5: steam" = [{ class = "^Firefox$"; }];
+        #assigns = "4" = [{ class = "mpv"; }];
         menu = "PATH=$PATH:~/.local/bin ${pkgs.dmenu}/bin/dmenu_run";
         modifier = "Mod4"; # Windows-key modifier
         terminal = "${pkgs.xst}/bin/xst -e ${pkgs.zsh}/bin/zsh";

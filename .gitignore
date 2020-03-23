@@ -1,2 +1,4 @@
 hardware-configuration.nix
 ident.nix
+nixos-configuration.code-workspace
+secrets.nix
