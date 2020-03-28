@@ -184,15 +184,7 @@
     allowBroken = true;
     allowUnfree = true;
     android_sdk.accept_license = true;
-    #firefox.enableAdobeFlash = true;
-    #firefox.enableGoogleTalkPlugin = true;
-    firefox.enableGTK3 = true;
-    #firefox.ffmpegSupport= true;
-    #firefox.jre = true;
-    #firefox.enableMPlayer = true;
-    #firefox.icedtea = true;
     permittedInsecurePackages = [ "openssl-1.0.2u" ];
-
   };
 
   powerManagement.cpuFreqGovernor = "performance";

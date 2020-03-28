@@ -11,10 +11,9 @@ let
 in {
   imports = [
     ./..
-    (import (builtins.fetchGit {
-      ref = "master";
-      url = "https://github.com/rycee/home-manager";
-    }) { }).nixos # Home-Manger
+    (import (builtins.fetchTarball
+      "https://github.com/rycee/home-manager/archive/master.tar.gz")
+      { }).nixos # Home-Manger
   ];
 
   home-manager.users.jdf = { config, pkgs, lib, ... }: {
@@ -24,7 +23,7 @@ in {
         nur = import (builtins.fetchTarball
           "https://github.com/nix-community/NUR/archive/master.tar.gz") {
             inherit pkgs;
-          };
+          }; # Nix User Repository
       };
       permittedInsecurePackages = [ "openssl-1.0.2u" ];
     };
@@ -167,13 +166,18 @@ in {
       hwdec = "auto-safe";
       hwdec-codecs = "all";
       interpolation = "yes";
-      msg-level = "vo=fatal"; # Prevent harmless warnings/errors when using hardware decoding
-      scale = "ewa_lanczossharp"; # If your hardware can run it, this is probably what you should use by default.
-      scaler-resizes-only = "yes"; # Disable the scaler if the video image is not resized.
+      msg-level =
+        "vo=fatal"; # Prevent harmless warnings/errors when using hardware decoding
+      scale =
+        "ewa_lanczossharp"; # If your hardware can run it, this is probably what you should use by default.
+      scaler-resizes-only =
+        "yes"; # Disable the scaler if the video image is not resized.
       tscale = "oversample"; # This filter is good at temporal interpolation
-      video-sync = "display-vdrop"; # Drop or repeat video frames to compensate desyncing video.
+      video-sync =
+        "display-vdrop"; # Drop or repeat video frames to compensate desyncing video.
       vo = "gpu"; # Enable hardware acceleration.
-      ytdl-format = "bestvideo[height<=?720][fps<=?30][vcodec!=?vp9]+bestaudio/best";
+      ytdl-format =
+        "bestvideo[height<=?720][fps<=?30][vcodec!=?vp9]+bestaudio/best";
     };
     programs.mpv.enable = true;
     programs.rofi.enable = true;
@@ -212,6 +216,8 @@ in {
     programs.zsh.profileExtra = "";
     programs.zsh.sessionVariables = { };
     programs.zsh.shellAliases = { };
+
+    gtk.enable = true;
 
     home = {
       activation = {
@@ -265,12 +271,14 @@ in {
         steam_light = { # Steam No Browser
           executable = true;
           target = ".local/bin/steam_light";
-          text = "${pkgs.steam}/bin/steam -console -silent -no-browser -compact";
+          text =
+            "${pkgs.steam}/bin/steam -console -silent -no-browser -compact";
         };
         steamgrid_runner = {
           executable = true;
           target = ".local/bin/steamgrid_run";
-          text = "${pkgs.nur.repos.joshuafern.steamgrid}/bin/steamgrid -igdb ${secrets.apiKey.igdb} -steamgriddb ${secrets.apiKey.steamgriddb} -types animated,static -styles alternate,blurred,white_logo,material";
+          text =
+            "${pkgs.nur.repos.joshuafern.steamgrid}/bin/steamgrid -igdb ${secrets.apiKey.igdb} -steamgriddb ${secrets.apiKey.steamgriddb} -types animated,static -styles alternate,blurred,white_logo,material";
         };
         ytcc_autoplay = {
           executable = true;
@@ -324,6 +332,8 @@ in {
         zathura # A highly customizable and functional PDF viewer
         # applications/networking
         hydroxide # A third-party, open-source ProtonMail bridge
+        mumble # Low-latency, high quality voice chat software
+        #mumble_overlay #
         wayback_machine_downloader # Download websites from the Internet Archive Wayback Machine
         # applications/networking/browsers
         brave # Privacy-oriented browser for Desktop and Laptop computers
@@ -341,6 +351,7 @@ in {
         # applications/networking/gopher
         gopher # A ncurses gopher client
         # applications/networking/instant-messengers
+        ripcord # Desktop chat client for Slack and Discord
         weechat # A fast, light and extensible chat client
         # applications/networking/mailreaders
         alpine # Console mail reader
@@ -365,25 +376,25 @@ in {
         # applications/virtualization
         looking-glass-client # A KVM Frame Relay (KVMFR) implementation
         # build-support
-        appimage-run #
+        appimage-run
         iconConvTools # Tools for icon conversion specific to nix package manager
         nix-template-rpm # Create templates of nix expressions from RPM .spec files
         #steam-run
-        steam-run-native #
+        steam-run-native
         # build-support/rust
-        carnix #
-        toml2nix #
+        carnix
+        toml2nix
         # data/icons
         hicolor-icon-theme # Default fallback theme used by implementations of the icon theme specification
         # data/misc
-        nixos-icons #
+        nixos-icons
         # data/soundfonts
         soundfont-fluid # Frank Wen's pro-quality GM/GS soundfont
         # desktops/enlightenment
         enlightenment.terminology # Powerful terminal emulator based on EFL
         # desktops/gnome3
-        gnome3.adwaita-icon-theme #
-        gnome-themes-extra #
+        gnome3.adwaita-icon-theme
+        gnome-themes-extra
         # development/compilers
         egg2nix # Generate nix-expression from CHICKEN scheme eggs
         crystal2nix # Utility to convert Crystal's shard.lock files to a Nix file
@@ -447,7 +458,7 @@ in {
         python38Packages.ueberzug # An alternative for w3mimgdisplay
         python38Packages.virtualenvwrapper # Enhancements to virtualenv
         # development/r-modules
-        rPackages.internetarchive #
+        rPackages.internetarchive
         # development/ruby-modules
         bundix # Creates Nix packages from Gemfiles
         # development/tools
@@ -456,17 +467,19 @@ in {
         flatpak-builder # Tool to build flatpaks from source
         go2nix # Go apps packaging for Nix
         pkgconf # Package compiler and linker metadata toolkit
-        pypi2nix # 
+        pypi2nix
         rnix-lsp # A work-in-progress language server for Nix, with syntax checking and basic completion
         solarus-quest-editor # The editor for the Zelda-like ARPG game engine, Solarus
         vgo2nix # Convert go.mod files to nixpkgs buildGoPackage compatible deps.nix files
-        yarn2nix # 
+        yarn2nix
         # development/tools/analysis
         #nix-linter # Linter for Nix(pkgs), based on hnix
         # development/tools/misc
+        bin_replace_string # Edit precompiled binaries
         #hydra # Nix-based continuous build system
         luajitPackages.luarocks-nix # A package manager for Lua
         nixbang # A special shebang to run scripts in a nix-shell
+        strace # A system call tracer for Linux
         # games
         _2048-in-terminal # Animated console version of the 2048 game
         azimuth # A metroidvania game using only vectorial graphic
@@ -497,7 +510,7 @@ in {
         openttd # Open source clone of the Microprose game "Transport Tycoon Deluxe"
         #privateer # Adventure space flight simulation computer game
         rogue # The final version of the original Rogue game developed for the UNIX operating system
-        scummvm # 	Program to run certain classic graphical point-and-click adventure games (such as Monkey Island)
+        scummvm # Program to run certain classic graphical point-and-click adventure games (such as Monkey Island)
         shattered-pixel-dungeon # Traditional roguelike game with pixel-art graphics and simple interface
         solarus # A Zelda-like ARPG game engine
         steam # A digital distribution platform
@@ -520,7 +533,7 @@ in {
         blastem # The fast and accurate Genesis emulator
         caprice32 # A complete emulation of CPC464, CPC664 and CPC6128
         ccemux # A modular ComputerCraft emulator
-        citra # An open-source emulator for the Nintendo 3DS
+        nur.repos.joshuafern.citra # An open-source emulator for the Nintendo 3DS
         desmume # An open-source Nintendo DS emulator
         dolphinEmuMaster # Gamecube/Wii/Triforce emulator for x86_64 and ARMv8
         nur.repos.joshuafern.dosbox-staging # A modernized DOS emulator
@@ -562,17 +575,19 @@ in {
         # misc/themes
         adwaita-qt # A style to bend Qt applications to look like they belong into GNOME Shell
         # misc/vim-plugins
-        vimPlugins.vim-nix #
+        vimPlugins.vim-nix
         # os-specific/linux
         btfs # A bittorrent filesystem based on FUSE
         hdparm # A tool to get/set ATA/SATA drive parameters under Linux
         kexectools # Tools related to the kexec Linux feature
+        libratbag # Configuration library for gaming mice
         psmisc # A set of small useful utilities that use the proc filesystem (such as fuser, killall and pstree)
         unstick # Silently eats chmod commands forbidden by Nix
         # servers/http
         nix-binary-cache # A set of scripts to serve the Nix store as a binary cache
         # servers/x11
-        xorg.xinit #
+        xorg.xev
+        xorg.xinit
         # shells
         dash # A POSIX-compliant implementation of /bin/sh that aims to be as small as possible
         ksh # KornShell Command And Programming Language
@@ -584,6 +599,8 @@ in {
         zip # Compressor/archiver for creating and modifying zipfiles
         # tools/audio
         pulsemixer # Cli and curses mixer for pulseaudio
+        # tools/compression
+        zsync # File distribution system using the rsync algorithm
         # tools/filesystems
         boxfs # FUSE file system for box.com accounts
         gitfs # A FUSE filesystem that fully integrates with git
@@ -607,6 +624,7 @@ in {
         mc # File Manager and User Shell for the GNU Project
         ncdu # Disk usage analyzer with an ncurses interface
         pfetch # A pretty system information tool written in POSIX sh
+        nur.repos.joshuafern.samrewritten # Allows you to unlock and relock your Steam achievements
         scanmem # Memory scanner for finding and poking addresses in executing processes
         snore # sleep with feedback
         xclip # Tool to access the X clipboard from a console application
@@ -618,7 +636,7 @@ in {
         wget # Tool for retrieving files using HTTP, HTTPS, and FTP
         ytcc # Command Line tool to keep track of your favourite YouTube channels without signing up for a Google account
         # tools/nix
-        nix-info #
+        nix-info
         nix-query-tree-viewer # GTK viewer for the output of `nix store --query --tree`
         nix-script # A shebang for running inside nix-shell.
         nix-store-gcs-proxy # A HTTP nix store that proxies requests to Google Storage
@@ -673,31 +691,86 @@ in {
         xkbvalidate # NixOS tool to validate X keyboard configuration
       ];
       sessionVariables = {
-        #BROWSER = "firefox";
-        #EDITOR = "nano";
+        # Default Programs
+        BROWSER = "${pkgs.firefox-devedition-bin}/bin/firefox";
+        EDITOR = "${pkgs.vim}/bin/vim";
         #QT_QPA_PLATFORMTHEME = "qt5ct";
+        READER = "${pkgs.zathura}/bin/zathura";
+        TERMINAL = "${pkgs.xst}/bin/xst";
         #VISUAL = "nano";
+        # Clean-up
+        LESSHISTFILE = "-";
+        # Program Settings
         WINEDEBUG = "-all"; # Increase Performance with WINE
       };
       stateVersion = "20.03";
     };
 
+    qt.enable = true;
+    qt.platformTheme = "gtk";
+
+    services.dunst.enable = true;
+    services.redshift.enable = true;
+    services.redshift.provider = "geoclue2";
+    services.screen-locker.enable = true;
+    services.screen-locker.inactiveInterval = 60;
+    services.screen-locker.lockCmd = "${pkgs.slock}/bin/slock";
+    services.sxhkd.enable = true;
+    services.sxhkd.keybindings = {
+      "super + shift + {r,c}" = "i3-msg {restart,reload}";
+    };
+    services.unclutter.enable = true;
+
     xdg.enable = true;
 
     xsession.enable = true;
-    xsession.windowManager.i3 = {
-      config = {
-        #assigns = "4" = [{ class = "mpv"; }];
-        menu = "PATH=$PATH:~/.local/bin ${pkgs.dmenu}/bin/dmenu_run";
-        modifier = "Mod4"; # Windows-key modifier
-        terminal = "${pkgs.xst}/bin/xst -e ${pkgs.zsh}/bin/zsh";
+    xsession.initExtra = ''
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 00 action set button 1 # Left Click
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 01 action set button 2 # Right Click
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 02 action set button 3 # Middle Click
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 03 action set button 4 # MWheel Left
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 04 action set button 5 # MWheel Right
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 05 action set macro KEY_F13 # Ring Click
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 06 action set macro +KEY_LEFTSHIFT KEY_RESERVED -KEY_LEFTSHIFT #G07
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 07 action set macro +KEY_LEFTMETA KEY_RESERVED -KEY_LEFTMETA #G08
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 08 action set macro KEY_1 #G09
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 09 action set macro KEY_2 #G10
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 10 action set macro KEY_3 #G11
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 11 action set macro KEY_4 #G12
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 12 action set macro KEY_5 #G13
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 13 action set macro KEY_6 #G14
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 14 action set macro KEY_7 #G15
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 15 action set macro KEY_8 #G16
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 16 action set macro KEY_9 #G17
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 17 action set macro KEY_0 #G18
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 18 action set macro KEY_MINUS #G19
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 19 action set macro KEY_EQUAL #G20
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 dpi set 400
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 led 0 set color 00ff00
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 led 0 set mode on
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 rate set 1000
+      ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile active set 0
+      ${pkgs.xorg.xset}/bin/xset m 0 0
+    '';
+    xsession.pointerCursor.name = "Vanilla-DMZ";
+    xsession.pointerCursor.package = with pkgs; vanilla-dmz;
+    xsession.windowManager.i3.config = {
+      #assigns = "4" = [{ class = "mpv"; }];
+      keybindings = lib.mkOptionDefault { };
+      keycodebindings = lib.mkOptionDefault {
+        #"191" = "exec amixer -c2 cset numid=11 on"; # F13: Push-to-talk on
+        #"--release 191" = "exec amixer -c2 cset numid=11 off"; # F13 (Release): Push-to-talk off
       };
-      enable = true;
+      menu = "PATH=$PATH:~/.local/bin ${pkgs.dmenu}/bin/dmenu_run";
+      modifier = "Mod4"; # Windows-key modifier
+      terminal =
+        "${pkgs.xst}/bin/xst -e ${pkgs.zsh}/bin/zsh"; # Start xst terminal with zsh shell
     };
+    xsession.windowManager.i3.enable = true;
   };
   #home-manager.useGlobalPkgs = false; # Use the global pkgs instead of home-manager.users.<name>.nixpkgs
   home-manager.useUserPackages =
-    false; # Install packages to /etc/profiles instead of ~/.nix-profile
+    false; # Install to /etc/profiles instead of ~/.nix-profile
 
   users.users.jdf = {
     createHome = true;
