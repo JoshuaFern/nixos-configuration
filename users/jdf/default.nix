@@ -288,6 +288,7 @@ in {
       };
       packages = with pkgs; [
         # applications/audio
+        cava # Console-based Audio Visualizer for Alsa
         cmus # Small, fast and powerful console music player for Linux and *BSD
         fluidsynth # Real-time software synthesizer based on the SoundFont 2 specifications
         mikmod # Tracker music player for the terminal
@@ -307,6 +308,7 @@ in {
         cool-retro-term # Terminal emulator which mimics the old cathode display
         et # Minimal libnotify-based (egg) timer
         freemind # Mind-mapping software
+        glava # OpenGL audio spectrum visualizer 
         heimer # Simple cross-platform mind map and note-taking tool written in Qt
         lutris-unwrapped # Open Source gaming platform for GNU/Linux
         mako # A lightweight Wayland notification daemon
@@ -333,7 +335,7 @@ in {
         # applications/networking
         hydroxide # A third-party, open-source ProtonMail bridge
         mumble # Low-latency, high quality voice chat software
-        #mumble_overlay #
+        #mumble_overlay
         wayback_machine_downloader # Download websites from the Internet Archive Wayback Machine
         # applications/networking/browsers
         brave # Privacy-oriented browser for Desktop and Laptop computers
@@ -474,9 +476,12 @@ in {
         yarn2nix
         # development/tools/analysis
         #nix-linter # Linter for Nix(pkgs), based on hnix
+        # development/tools/java
+        visualvm # A visual interface for viewing information about Java applications
         # development/tools/misc
         bin_replace_string # Edit precompiled binaries
         #hydra # Nix-based continuous build system
+        nur.repos.joshuafern.libspeedhack # A simple dynamic library to slowdown or speedup applications
         luajitPackages.luarocks-nix # A package manager for Lua
         nixbang # A special shebang to run scripts in a nix-shell
         strace # A system call tracer for Linux
@@ -615,6 +620,7 @@ in {
         scrot # A command-line screen capture utility
         # tools/misc
         abduco # Allows programs to be run independently from its controlling terminal
+        bc # GNU software calculator
         byobu # Text-based window manager and terminal multiplexer
         cloc # A program that counts lines of source code
         dvtm # Dynamic virtual terminal manager
@@ -758,6 +764,9 @@ in {
       #assigns = "4" = [{ class = "mpv"; }];
       keybindings = lib.mkOptionDefault { };
       keycodebindings = lib.mkOptionDefault {
+        "Mod4+110" = "exec echo 1.0 > /tmp/speedhack_pipe"; # HOME: Speedhack Reset
+        "Mod4+117" = "exec echo $(echo $(tail -1 /tmp/speedhack_log | sed 's/[^0-9.]*//g')-0.1 | bc -l) > /tmp/speedhack_pipe"; # PGDOWN: Speedhack Decrease
+        "Mod4+112" = "exec echo $(echo $(tail -1 /tmp/speedhack_log | sed 's/[^0-9.]*//g')+0.1 | bc -l) > /tmp/speedhack_pipe"; # PGUP: Speedhack Increase
         #"191" = "exec amixer -c2 cset numid=11 on"; # F13: Push-to-talk on
         #"--release 191" = "exec amixer -c2 cset numid=11 off"; # F13 (Release): Push-to-talk off
       };
