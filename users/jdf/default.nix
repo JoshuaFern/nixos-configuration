@@ -32,6 +32,29 @@ in {
 
     news.display = "silent";
 
+    programs.beets.enable = true;
+    programs.beets.settings = {
+      directory = "/mnt/hdd0/Music/"; # Todo, fix this directory for other hosts
+      library =
+        "/mnt/hdd0/Music/.beets_library.db"; # Todo, fix this directory for other hosts
+      # Plugins may have dependencies, here's a list for refrence:
+      # badfiles: mp3val flac
+      # beatport: python37Packages.requests python37Packages.requests_oauthlib
+      # chroma: chromaprint python37Packages.pyacoustid
+      # discogs: python37Packages.discogs_client
+      # fetchart: python37Packages.requests
+      # lastgenre: python37Packages.pylast
+      # lyrics: python37Packages.beautifulsoup4 python37Packages.langdetect python37Packages.requests
+      plugins =
+        "acousticbrainz badfiles chroma discogs fetchart ftintitle lastgenre lyrics missing scrub";
+      import = {
+        move = true;
+        bell = true;
+      };
+      discogs = { user_token = "${secrets.apiKey.discogs}"; };
+      lyrics = { google_API_key = "${secrets.apiKey.googleBeets}"; };
+      original_date = true;
+    };
     programs.chromium.enable = true;
     programs.firefox = {
       enable = true; # Whether to enable Firefox
@@ -184,7 +207,19 @@ in {
     programs.vscode.enable = true;
     programs.vscode.package = with pkgs; vscodium;
     programs.vscode.userSettings = {
-      "update.channel" = "none";
+      "editor.accessibilitySupport" = "off";
+      "editor.cursorStyle" = "underline-thin";
+      "editor.fontFamily" =
+        "'Cascadia Code', Consolas, 'Courier New', monospace";
+      "editor.fontLigatures" = true;
+      "editor.fontSize" = 12;
+      "extensions.showRecommendationsOnlyOnDemand" = true;
+      "nixfmt.path" = "${pkgs.nixfmt}/bin/nixfmt";
+      "terminal.integrated.shell.linux" = "${pkgs.zsh}/bin/zsh";
+      "update.mode" = "none";
+      "update.showReleaseNotes" = false;
+      "wal.tokenColorTheme" = "Default Dark+";
+      "workbench.colorTheme" = "Wal";
       "[nix]"."editor.tabSize" = 2;
     };
     programs.zsh.autocd = true;
@@ -212,7 +247,27 @@ in {
     programs.zsh.oh-my-zsh.custom = "";
     programs.zsh.oh-my-zsh.plugins = [ ];
     programs.zsh.oh-my-zsh.theme = "";
-    programs.zsh.plugins = [ ];
+    programs.zsh.plugins = [
+      {
+        name = "zsh-autosuggestions";
+        src = pkgs.fetchFromGitHub {
+          owner = "zsh-users";
+          repo = "zsh-autosuggestions";
+          rev = "v0.6.4";
+          sha256 = "0h52p2waggzfshvy1wvhj4hf06fmzd44bv6j18k3l9rcx6aixzn6";
+        };
+      }
+      {
+        name = "enhancd";
+        file = "init.sh";
+        src = pkgs.fetchFromGitHub {
+          owner = "b4b4r07";
+          repo = "enhancd";
+          rev = "v2.2.4";
+          sha256 = "1smskx9vkx78yhwspjq2c5r5swh9fc5xxa40ib4753f00wk4dwpp";
+        };
+      }
+    ];
     programs.zsh.profileExtra = "";
     programs.zsh.sessionVariables = { };
     programs.zsh.shellAliases = { };
@@ -247,6 +302,11 @@ in {
           executable = true;
           target = ".local/bin/gamemenu";
           text = "${pkgs.eidolon}/bin/eidolon menu";
+        };
+        ryujinx_run = {
+          executable = true;
+          target = ".local/bin/ryujinx_run";
+          text = "steam-run /home/jdf/.local/bin/ryujinx/Ryujinx";
         };
         steam_bp = { # Steam Big Picture
           executable = true;
@@ -297,20 +357,24 @@ in {
         pianobar # A console front-end for Pandora.com
         schismtracker # Music tracker application, free reimplementation of Impulse Tracker
         vorbis-tools # Extra tools for Ogg-Vorbis audio codec
+
         # applications/graphics
         dia # Gnome Diagram drawing software
         imv # Simple X11/Wayland Image Viewer
         inkscape # Vector graphics editor
         nur.repos.joshuafern.steamgrid # Downloads images to fill your Steam grid view
         waifu2x-converter-cpp # Improved fork of Waifu2X C++ using OpenCL and OpenCV
+
         # applications/misc
+        artha # An offline thesaurus based on WordNet
         calcurse # A calendar and scheduling application for the command line
+        cheat # Create and view interactive cheatsheets on the command-line
         cool-retro-term # Terminal emulator which mimics the old cathode display
         et # Minimal libnotify-based (egg) timer
         freemind # Mind-mapping software
-        glava # OpenGL audio spectrum visualizer 
+        glava # OpenGL audio spectrum visualizer
         heimer # Simple cross-platform mind map and note-taking tool written in Qt
-        lutris-unwrapped # Open Source gaming platform for GNU/Linux
+        lutris # Open Source gaming platform for GNU/Linux
         mako # A lightweight Wayland notification daemon
         minder # Mind-mapping application for Elementary OS
         mps-youtube # Terminal based YouTube player and downloader
@@ -332,11 +396,13 @@ in {
         xmind # Mind-mapping software
         xst # Simple terminal fork that can load config from Xresources
         zathura # A highly customizable and functional PDF viewer
+
         # applications/networking
         hydroxide # A third-party, open-source ProtonMail bridge
         mumble # Low-latency, high quality voice chat software
         #mumble_overlay
         wayback_machine_downloader # Download websites from the Internet Archive Wayback Machine
+
         # applications/networking/browsers
         brave # Privacy-oriented browser for Desktop and Laptop computers
         browsh # A fully-modern text-based browser, rendering to TTY and browsers
@@ -347,36 +413,47 @@ in {
         qtchan # 4chan browser in qt5
         qutebrowser # Keyboard-focused browser with a minimal GUI
         surf # A simple web browser based on WebKit/GTK
-        tor-browser-bundle-bin # Tor Browser Bundle built by torproject.org
+        #tor-browser-bundle-bin # Tor Browser Bundle built by torproject.org
         vimb # A Vim-like browser
         w3m # A text-mode web browser
+
         # applications/networking/gopher
         gopher # A ncurses gopher client
+
         # applications/networking/instant-messengers
         ripcord # Desktop chat client for Slack and Discord
         weechat # A fast, light and extensible chat client
+
         # applications/networking/mailreaders
         alpine # Console mail reader
         mutt-with-sidebar # A small but very powerful text-based mail client
+
         # applications/networking/p2p
         qbittorrent # Featureful free software BitTorrent client
         qbittorrent-nox # Featureful free software BitTorrent client
         transmission-remote-cli # Curses interface for the Transmission BitTorrent daemon
+
         # applications/networking/remote
         freerdp # A Remote Desktop Protocol Client
+
         # applications/office
         libreoffice-fresh # Comprehensive, professional-quality productivity suite, a variant of openoffice.org
         wordgrinder # Text-based word processor
+
         # applications/radio
         aldo # Morse code training program
         unixcw # sound characters as Morse code on the soundcard or console speaker
+
         # applications/version-management
         gitAndTools.gitFull # Distributed version control system
         mercurialFull # A fast, lightweight SCM system for very large distributed projects
+
         # applications/video
         streamlink # CLI for extracting streams from various websites to video player of your choosing
+
         # applications/virtualization
         looking-glass-client # A KVM Frame Relay (KVMFR) implementation
+
         # build-support
         appimage-run
         iconConvTools # Tools for icon conversion specific to nix package manager
@@ -386,22 +463,29 @@ in {
         # build-support/rust
         carnix
         toml2nix
+
         # data/icons
         hicolor-icon-theme # Default fallback theme used by implementations of the icon theme specification
+
         # data/misc
         nixos-icons
+
         # data/soundfonts
         soundfont-fluid # Frank Wen's pro-quality GM/GS soundfont
+
         # desktops/enlightenment
         enlightenment.terminology # Powerful terminal emulator based on EFL
+
         # desktops/gnome3
         gnome3.adwaita-icon-theme
         gnome-themes-extra
+
         # development/compilers
         egg2nix # Generate nix-expression from CHICKEN scheme eggs
         crystal2nix # Utility to convert Crystal's shard.lock files to a Nix file
         go # The Go Programming language
         mono # Cross platform, open source .NET development framework
+
         # development/haskell-modules
         #haskellPackages.arion-compose # Run docker-compose with help from Nix/NixOS
         #haskellPackages.autonix-deps # Library for Nix expression dependency generation
@@ -439,18 +523,23 @@ in {
         #haskellPackages.stackage2nix # Convert Stack files into Nix build instructions
         #haskellPackages.styx # A generator of nix files
         #haskellPackages.tateti-tateti # Meta tic-tac-toe ncurses game
+
         # development/interpreters
         luajit # High-performance JIT compiler for Lua 5.1
         #nix-exec # Run programs defined in nix expressions
         python2Full # A high-level dynamically-typed programming language
         python3Full # A high-level dynamically-typed programming language
+
         # development/libraries
+        chromaprint # AcoustID audio fingerprinting library
         libnotify # A library that sends desktop notifications to a notification daemon
         nix-plugins # Collection of miscellaneous plugins for the nix expression language
+
         # development/mobile
         abootimg # Manipulate Android Boot Images
         imgpatchtools # Tools to manipulate Android OTA archives
         nur.repos.joshuafern.qdl # Qualcomm Download
+
         # development/python-modules
         python38Packages.nix-prefetch-github # Prefetch sources from github
         #python38Packages.nixpart # NixOS storage manager/partitioner
@@ -459,10 +548,13 @@ in {
         python38Packages.speedtest-cli # Command line interface for testing internet bandwidth using speedtest.net
         python38Packages.ueberzug # An alternative for w3mimgdisplay
         python38Packages.virtualenvwrapper # Enhancements to virtualenv
+
         # development/r-modules
         rPackages.internetarchive
+
         # development/ruby-modules
         bundix # Creates Nix packages from Gemfiles
+
         # development/tools
         apktool # A tool for reverse engineering Android apk files
         dep2nix # Convert `Gopkg.lock` files from golang dep into `deps.nix`
@@ -474,17 +566,22 @@ in {
         solarus-quest-editor # The editor for the Zelda-like ARPG game engine, Solarus
         vgo2nix # Convert go.mod files to nixpkgs buildGoPackage compatible deps.nix files
         yarn2nix
+
         # development/tools/analysis
         #nix-linter # Linter for Nix(pkgs), based on hnix
+
         # development/tools/java
         visualvm # A visual interface for viewing information about Java applications
+
         # development/tools/misc
         bin_replace_string # Edit precompiled binaries
         #hydra # Nix-based continuous build system
+        kodi-cli # Kodi/XBMC bash script to send Kodi commands using JSON RPC. It also allows sending YouTube videos to Kodi
         nur.repos.joshuafern.libspeedhack # A simple dynamic library to slowdown or speedup applications
         luajitPackages.luarocks-nix # A package manager for Lua
         nixbang # A special shebang to run scripts in a nix-shell
         strace # A system call tracer for Linux
+
         # games
         _2048-in-terminal # Animated console version of the 2048 game
         azimuth # A metroidvania game using only vectorial graphic
@@ -492,12 +589,12 @@ in {
         braincurses # A version of the classic game Mastermind
         #bsdgames # Ports of all the games from NetBSD-current that are free
         cataclysm-dda # A free, post apocalyptic, zombie infested rogue-like
-        devilutionx # Diablo build for modern operating systems
+        #devilutionx # Diablo build for modern operating systems
         dwarf-fortress # A single-player fantasy game with a randomly generated adventure world
         eidolon # A single TUI-based registry for drm-free, wine and steam games on linux, accessed through a rofi launch menu
         EmptyEpsilon # Open source bridge simulator based on Artemis
-        freeciv # Multiplayer (or single player), turn-based strategy game
-        #freeciv_gtk # Multiplayer (or single player), turn-based strategy game
+        #freeciv # Multiplayer (or single player), turn-based strategy game
+        freeciv_gtk # Multiplayer (or single player), turn-based strategy game
         #freeciv_qt # Multiplayer (or single player), turn-based strategy game
         freedroidrpg # Isometric 3D RPG similar to game Diablo
         freesweep # A console minesweeper-style game written in C for Unix-like systems
@@ -524,13 +621,16 @@ in {
         vitetris # Terminal-based Tetris clone by Victor Nilsson
         xonotic # A free fast-paced first-person shooter
         zeroad # A free, open-source game of ancient warfare
+
         # maintainers/scripts
         nix-generate-from-cpan # Utility to generate a Nix expression for a Perl package from CPAN
         nixpkgs-lint # A utility for Nixpkgs contributors to check Nixpkgs for common errors
+
         # misc
         documentation-highlighter # Highlight.js sources for the Nix Ecosystem's documentation.
         foldingathome # Folding@home distributed computing client
         scrcpy # Display and control Android devices over USB or TCP/IP
+
         # misc/emulators
         ataripp # An enhanced, cycle-accurated Atari emulator
         atari800 # An Atari 8-bit emulator
@@ -577,10 +677,13 @@ in {
         xcpc # A portable Amstrad CPC 464/664/6128 emulator written in C
         yabause # An open-source Sega Saturn emulator
         zsnes # A Super Nintendo Entertainment System Emulator
+
         # misc/themes
         adwaita-qt # A style to bend Qt applications to look like they belong into GNOME Shell
+
         # misc/vim-plugins
         vimPlugins.vim-nix
+
         # os-specific/linux
         btfs # A bittorrent filesystem based on FUSE
         hdparm # A tool to get/set ATA/SATA drive parameters under Linux
@@ -588,24 +691,31 @@ in {
         libratbag # Configuration library for gaming mice
         psmisc # A set of small useful utilities that use the proc filesystem (such as fuser, killall and pstree)
         unstick # Silently eats chmod commands forbidden by Nix
+
         # servers/http
         nix-binary-cache # A set of scripts to serve the Nix store as a binary cache
+
         # servers/x11
         xorg.xev
         xorg.xinit
+
         # shells
         dash # A POSIX-compliant implementation of /bin/sh that aims to be as small as possible
         ksh # KornShell Command And Programming Language
         mksh # MirBSD Korn Shell
         rc # The Plan 9 shell
+
         # tools/archivers
         p7zip # A port of the 7-zip archiver
         unzip # An extraction utility for archives compressed in .zip format
         zip # Compressor/archiver for creating and modifying zipfiles
+
         # tools/audio
         pulsemixer # Cli and curses mixer for pulseaudio
+
         # tools/compression
         zsync # File distribution system using the rsync algorithm
+
         # tools/filesystems
         boxfs # FUSE file system for box.com accounts
         gitfs # A FUSE filesystem that fully integrates with git
@@ -615,9 +725,11 @@ in {
         sshfs # FUSE-based filesystem that allows remote filesystems to be mounted over SSH
         vmfs-tools # FUSE-based VMFS (vmware) file system tools
         wdfs # User-space filesystem that allows to mount a webdav share
+
         # tools/graphics
         grim # Grab images from a Wayland compositor
         scrot # A command-line screen capture utility
+
         # tools/misc
         abduco # Allows programs to be run independently from its controlling terminal
         bc # GNU software calculator
@@ -635,12 +747,14 @@ in {
         snore # sleep with feedback
         xclip # Tool to access the X clipboard from a console application
         youtube-dl # Command-line tool to download videos from YouTube.com and other sites
+
         # tools/networking
         bwm_ng # A small and simple console-based live network and disk io bandwidth monitor
         curlFull # A command line tool for transferring files with URL syntax
         tftp-hpa # TFTP tools - a lot of fixes on top of BSD TFTP
         wget # Tool for retrieving files using HTTP, HTTPS, and FTP
         ytcc # Command Line tool to keep track of your favourite YouTube channels without signing up for a Google account
+
         # tools/nix
         nix-info
         nix-query-tree-viewer # GTK viewer for the output of `nix store --query --tree`
@@ -649,13 +763,14 @@ in {
         nixdoc # Generate documentation for Nix functions
         nixos-generators # Collection of image builders
         nixpkgs-fmt # Nix code formatter for nixpkgs
+
         # tools/package-management
         appimagekit # A tool to package desktop applications as AppImages
         morph # Morph is a NixOS host manager written in Golang.
         niff # A program that compares two Nix expressions and determines which attributes changed
         nix # Powerful package manager that makes package management reliable and reproducible
         nix-bundle # Create bundles from Nixpkgs attributes
-        nix-du # A tool to determine which gc-roots take space in your nix store
+        #nix-du # A tool to determine which gc-roots take space in your nix store
         nix-index # A files database for nixpkgs
         nix-pin # nixpkgs development utility
         nix-prefetch # Prefetch any fetcher function call, e.g. package sources
@@ -670,16 +785,19 @@ in {
         nixui # NodeWebkit user interface for Nix
         nox # Tools to make nix nicer to use
         protontricks # A simple wrapper for running Winetricks commands for Proton-enabled games
+
         # tools/package-management/disnix
         disnix # A Nix-based distributed service deployment tool
         disnixos # Provides complementary NixOS infrastructure deployment to Disnix
         DisnixWebService # A SOAP interface and client for Disnix
         dysnomia # Automated deployment of mutable components and services for Disnix
+
         # tools/security
         bitwarden # A secure and free password manager for all of your devices
         bitwarden-cli # A secure and free password manager for all of your devices.
         mkpasswd # Overfeatured front-end to crypt, from the Debian whois package
         vulnix # NixOS vulnerability scanner
+
         # tools/system
         htop # An interactive process viewer for Linux
         hwinfo # Hardware detection tool from openSUSE
@@ -688,13 +806,38 @@ in {
         pciutils # A collection of programs for inspecting and manipulating configuration of PCI devices
         plan9port # Plan 9 from User Space
         stress-ng # Stress test a computer system
+
         # tools/wayland
         ydotool # Generic Linux command-line automation tool
+
         # tools/x11
         xdg-user-dirs # A tool to help manage well known user directories like the desktop folder and the music folder
         xdg_utils # A set of command line tools that assist applications with a variety of desktop integration tasks
         xdotool # Fake keyboard/mouse input, window management, and more
         xkbvalidate # NixOS tool to validate X keyboard configuration
+
+        #
+        chromedriver
+        cht-sh
+        python37Packages.discogs_client
+        flac
+        geckodriver
+        gimp-with-plugins
+        loadwatch
+        qiv # Quick image viewer
+        mp3val
+        mythes
+        nyx
+        oneko # Creates a cute cat chasing around your mouse cursor
+        python37Packages.pyacoustid
+        python37Packages.pylast
+        python37Packages.requests
+        python37Packages.requests_oauthlib
+        translate-shell
+        tree # Command to produce a depth indented directory listing
+        wordnet
+        xorg.xcursorthemes
+        xorg.transset
       ];
       sessionVariables = {
         # Default Programs
@@ -716,6 +859,13 @@ in {
     qt.platformTheme = "gtk";
 
     services.dunst.enable = true;
+    services.picom.enable = true;
+    #services.picom.experimentalBackends = true;
+    services.picom.extraOptions = ''
+      invert-color-include = [
+          "class_g = 'JDownloader'"
+      ];
+    '';
     services.redshift.enable = true;
     services.redshift.provider = "geoclue2";
     services.screen-locker.enable = true;
@@ -758,15 +908,58 @@ in {
       ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile active set 0
       ${pkgs.xorg.xset}/bin/xset m 0 0
     '';
-    xsession.pointerCursor.name = "Vanilla-DMZ";
-    xsession.pointerCursor.package = with pkgs; vanilla-dmz;
+    xsession.pointerCursor.name = "capitaine-cursors";
+    xsession.pointerCursor.package = with pkgs; capitaine-cursors;
     xsession.windowManager.i3.config = {
       #assigns = "4" = [{ class = "mpv"; }];
-      keybindings = lib.mkOptionDefault { };
+      colors.background = "$bg";
+      colors.focused = {
+        background = "$bg";
+        border = "$bg";
+        childBorder = "$bg";
+        indicator = "$bg";
+        text = "$fg";
+      };
+      colors.focusedInactive = {
+        background = "$bg";
+        border = "$bg";
+        childBorder = "$bg";
+        indicator = "$bg";
+        text = "$fg";
+      };
+      colors.unfocused = {
+        background = "$bg";
+        border = "$bg";
+        childBorder = "$bg";
+        indicator = "$bg";
+        text = "$fg";
+      };
+      colors.urgent = {
+        background = "$bg";
+        border = "$bg";
+        childBorder = "$bg";
+        indicator = "$bg";
+        text = "$fg";
+      };
+      colors.placeholder = {
+        background = "$bg";
+        border = "$bg";
+        childBorder = "$bg";
+        indicator = "$bg";
+        text = "$fg";
+      };
+      keybindings = lib.mkOptionDefault {
+        #"${modifier}+d" = "exec dmenu_run -nb $bg -nf $fg -sb $fg -sf $bg";
+      };
       keycodebindings = lib.mkOptionDefault {
-        "Mod4+110" = "exec echo 1.0 > /tmp/speedhack_pipe"; # HOME: Speedhack Reset
-        "Mod4+117" = "exec echo $(echo $(tail -1 /tmp/speedhack_log | sed 's/[^0-9.]*//g')-0.1 | bc -l) > /tmp/speedhack_pipe"; # PGDOWN: Speedhack Decrease
-        "Mod4+112" = "exec echo $(echo $(tail -1 /tmp/speedhack_log | sed 's/[^0-9.]*//g')+0.1 | bc -l) > /tmp/speedhack_pipe"; # PGUP: Speedhack Increase
+        "Mod4+22" =
+          "exec kill -9 `ps -ef | egrep '.exe'|awk '{print $2}'`"; # Backspace: Kill WINE
+        "Mod4+110" =
+          "exec echo 1.0 > /tmp/speedhack_pipe"; # HOME: Speedhack Reset
+        "Mod4+117" =
+          "exec echo $(echo $(tail -1 /tmp/speedhack_log | sed 's/[^0-9.]*//g')-0.1 | bc -l) > /tmp/speedhack_pipe"; # PGDOWN: Speedhack Decrease
+        "Mod4+112" =
+          "exec echo $(echo $(tail -1 /tmp/speedhack_log | sed 's/[^0-9.]*//g')+0.1 | bc -l) > /tmp/speedhack_pipe"; # PGUP: Speedhack Increase
         #"191" = "exec amixer -c2 cset numid=11 on"; # F13: Push-to-talk on
         #"--release 191" = "exec amixer -c2 cset numid=11 off"; # F13 (Release): Push-to-talk off
       };
@@ -774,8 +967,14 @@ in {
       modifier = "Mod4"; # Windows-key modifier
       terminal =
         "${pkgs.xst}/bin/xst -e ${pkgs.zsh}/bin/zsh"; # Start xst terminal with zsh shell
+      window.titlebar = false;
     };
     xsession.windowManager.i3.enable = true;
+    xsession.windowManager.i3.extraConfig = ''
+      set_from_resource $fg i3wm.color7 #f0f0f0
+      set_from_resource $bg i3wm.color2 #f0f0f0
+    '';
+    xsession.windowManager.i3.package = with pkgs; i3-gaps;
   };
   #home-manager.useGlobalPkgs = false; # Use the global pkgs instead of home-manager.users.<name>.nixpkgs
   home-manager.useUserPackages =
