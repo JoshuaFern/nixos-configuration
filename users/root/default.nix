@@ -5,7 +5,7 @@ in {
     createHome = false;
     home = "/root";
     hashedPassword = secrets.accountPassword.root;
-    shell = with pkgs; mksh;
+    shell = with pkgs; zsh;
     uid = 0;
   };
 }
