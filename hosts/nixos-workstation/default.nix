@@ -1,5 +1,6 @@
 { config, pkgs, lib, ... }: {
   imports = [
+    ./cachix-combined.nix
     ./..
     ../../users/jdf # "jdf" User Oprtions
   ];
@@ -10,7 +11,7 @@
   boot.loader.systemd-boot.consoleMode = "max"; # Console resolution
   boot.loader.systemd-boot.enable = true; # systemd-boot (formerly gummiboot)
   boot.kernelPackages = with pkgs;
-    linuxPackages_latest; # linux kernel selection
+    linuxPackages_5_5; # linux kernel selection
   boot.kernelParams = [
     "vga=0x034d" # 1080p 24bit framebuffer
     "intel_pstate=nohwp" # Disables Intel's HWP (Hardware-managed P-states) https://www.kernel.org/doc/html/v4.12/admin-guide/pm/intel_pstate.html
@@ -251,6 +252,7 @@
     emacs.package = with pkgs; emacs;
     gvfs.enable = true; # Userspace virtual filesystem
     #kmscon.enable = true; # A kms/dri-based userspace virtual terminal implementation
+    netdata.enable = true;
     pipewire.enable =
       true; # Server and user space API to deal with multimedia pipelines
     ratbagd.enable =
