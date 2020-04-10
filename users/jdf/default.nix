@@ -18,6 +18,7 @@ in {
 
   home-manager.users.jdf = { config, pkgs, lib, ... }: {
     nixpkgs.config = {
+      #allowBroken = true;
       allowUnfree = true;
       packageOverrides = pkgs: {
         nur = import (builtins.fetchTarball
@@ -400,7 +401,6 @@ in {
         # applications/networking
         hydroxide # A third-party, open-source ProtonMail bridge
         mumble # Low-latency, high quality voice chat software
-        #mumble_overlay
         wayback_machine_downloader # Download websites from the Internet Archive Wayback Machine
 
         # applications/networking/browsers
@@ -458,7 +458,6 @@ in {
         appimage-run
         iconConvTools # Tools for icon conversion specific to nix package manager
         nix-template-rpm # Create templates of nix expressions from RPM .spec files
-        #steam-run
         steam-run-native
         # build-support/rust
         carnix
@@ -487,7 +486,7 @@ in {
         mono # Cross platform, open source .NET development framework
 
         # development/haskell-modules
-        #haskellPackages.arion-compose # Run docker-compose with help from Nix/NixOS
+        haskellPackages.arion-compose # Run docker-compose with help from Nix/NixOS
         #haskellPackages.autonix-deps # Library for Nix expression dependency generation
         #haskellPackages.autonix-deps-kf5 # Generate dependencies for KDE 5 Nix expressions
         #haskellPackages.bricks # Bricks is a lazy functional language based on Nix
@@ -509,7 +508,7 @@ in {
         #haskellPackages.nix-delegate # Convenient utility for distributed Nix builds
         #haskellPackages.nix-deploy # Deploy Nix-built software to a NixOS machine
         haskellPackages.nix-derivation # Parse and render *.drv files
-        #haskellPackages.nix-diff # Explain why two Nix derivations differ
+        haskellPackages.nix-diff # Explain why two Nix derivations differ
         #haskellPackages.nix-eval # Evaluate Haskell expressions using Nix to get packages
         #haskellPackages.nix-freeze-tree # Convert a tree of files into fixed-output derivations
         haskellPackages.nix-paths # Knowledge of Nix's installation directories
@@ -521,8 +520,6 @@ in {
         #haskellPackages.simple-nix # Simple parsing/pretty printing for Nix expressions
         #haskellPackages.stack2nix # Convert stack.yaml files into Nix build instructions
         #haskellPackages.stackage2nix # Convert Stack files into Nix build instructions
-        #haskellPackages.styx # A generator of nix files
-        #haskellPackages.tateti-tateti # Meta tic-tac-toe ncurses game
 
         # development/interpreters
         luajit # High-performance JIT compiler for Lua 5.1
@@ -542,8 +539,8 @@ in {
 
         # development/python-modules
         python38Packages.nix-prefetch-github # Prefetch sources from github
-        #python38Packages.nixpart # NixOS storage manager/partitioner
-        #python38Packages.nixpkgs-pytools # Tools for removing the tedious nature of creating nixpkgs derivations
+        python27Packages.nixpart # NixOS storage manager/partitioner
+        python37Packages.nixpkgs-pytools # Tools for removing the tedious nature of creating nixpkgs derivations
         python38Packages.pywal # Generate and change colorschemes on the fly. A 'wal' rewrite in Python 3.
         python38Packages.speedtest-cli # Command line interface for testing internet bandwidth using speedtest.net
         python38Packages.ueberzug # An alternative for w3mimgdisplay
@@ -593,16 +590,14 @@ in {
         dwarf-fortress # A single-player fantasy game with a randomly generated adventure world
         eidolon # A single TUI-based registry for drm-free, wine and steam games on linux, accessed through a rofi launch menu
         EmptyEpsilon # Open source bridge simulator based on Artemis
-        #freeciv # Multiplayer (or single player), turn-based strategy game
         freeciv_gtk # Multiplayer (or single player), turn-based strategy game
-        #freeciv_qt # Multiplayer (or single player), turn-based strategy game
         freedroidrpg # Isometric 3D RPG similar to game Diablo
         freesweep # A console minesweeper-style game written in C for Unix-like systems
         hyperrogue # A roguelike game set in hyperbolic geometry
         icbm3d # 3D vector-based clone of the atari game Missile Command
         lgogdownloader # Unofficial downloader to GOG.com for Linux users. It uses the same API as the official GOGDownloader
         liberal-crime-squad # A humorous politically themed ncurses game
-        #lincity_ng # City building game
+        lincity # City building game
         minetest # Infinite-world block sandbox game
         mindustry # A sandbox tower defense game
         multimc # A free, open source launcher for Minecraft
@@ -816,7 +811,7 @@ in {
         xdotool # Fake keyboard/mouse input, window management, and more
         xkbvalidate # NixOS tool to validate X keyboard configuration
 
-        #
+        # The NixOS package search is missing the expression path, so I'm not categorizing these new packages right now.
         chromedriver
         cht-sh
         python37Packages.discogs_client
@@ -829,6 +824,7 @@ in {
         mythes
         nyx
         oneko # Creates a cute cat chasing around your mouse cursor
+        opendungeons # An open source, real time strategy game sharing game elements with the Dungeon Keeper series and Evil Genius.
         python37Packages.pyacoustid
         python37Packages.pylast
         python37Packages.requests
@@ -848,9 +844,9 @@ in {
         TERMINAL = "${pkgs.xst}/bin/xst";
         #VISUAL = "nano";
         # Clean-up
-        LESSHISTFILE = "-";
+        LESSHISTFILE = "-"; # Remove the LESS history file.
         # Program Settings
-        WINEDEBUG = "-all"; # Increase Performance with WINE
+        WINEDEBUG = "-all"; # Increase Performance with WINE?
       };
       stateVersion = "20.03";
     };
@@ -1011,7 +1007,7 @@ in {
     hashedPassword = secrets.accountPassword.jdf;
     home = "/home/jdf";
     isNormalUser = true;
-    shell = with pkgs; dash;
+    shell = with pkgs; dash; # Every application started with dmenu is forked from this shell, I'm using dash for performance and memory reasons. Not intended for interactive use.
     uid = 1000;
   };
 }
