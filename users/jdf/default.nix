@@ -949,7 +949,7 @@ in {
       };
       keycodebindings = lib.mkOptionDefault {
         "Mod4+22" =
-          "exec kill -9 `ps -ef | egrep '.exe'|awk '{print $2}'`"; # Backspace: Kill WINE
+          "exec kill -9 `ps -ef | egrep '\.exe'|awk '{print $2}'`"; # Backspace: Kill WINE
         "Mod4+110" =
           "exec echo 1.0 > /tmp/speedhack_pipe"; # HOME: Speedhack Reset
         "Mod4+117" =
