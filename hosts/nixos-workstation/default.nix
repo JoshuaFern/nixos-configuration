@@ -11,7 +11,7 @@
   boot.loader.systemd-boot.consoleMode = "max"; # Console resolution
   boot.loader.systemd-boot.enable = true; # systemd-boot (formerly gummiboot)
   boot.kernelPackages = with pkgs;
-    linuxPackages_latest; # linux kernel selection
+    linuxPackages_testing; # linux kernel selection
   boot.kernelParams = [
     "vga=0x034d" # 1080p 24bit framebuffer
     "intel_pstate=nohwp" # Disables Intel's HWP (Hardware-managed P-states) https://www.kernel.org/doc/html/v4.12/admin-guide/pm/intel_pstate.html
