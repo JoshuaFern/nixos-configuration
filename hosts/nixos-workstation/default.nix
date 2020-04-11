@@ -177,8 +177,6 @@
 
   nix.allowedUsers = [ "@wheel" ];
   nix.gc.options = pkgs.lib.mkForce "--delete-older-than 15d";
-  nix.maxJobs =
-    8; # You should generally set it to the total number of logical cores in your system (e.g., 16 for two CPUs with 4 cores each and hyper-threading).
   nix.trustedUsers = [ "root" "@wheel" ];
 
   nixpkgs.config = {
