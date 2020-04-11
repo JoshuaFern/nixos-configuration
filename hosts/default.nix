@@ -60,7 +60,6 @@
   nix.autoOptimiseStore = true;
   nix.gc.automatic = true;
   nix.gc.options = "--delete-older-than 30d";
-  nix.maxJobs = lib.mkDefault 2;
   nix.trustedUsers = [ "root" "@wheel" ];
 
   nixpkgs.config = {
