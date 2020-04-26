@@ -882,16 +882,16 @@ in {
       ];
       sessionVariables = {
         # Default Programs
-        BROWSER = "${pkgs.firefox-devedition-bin}/bin/firefox";
+        BROWSER = "${pkgs.firefox-bin}/bin/firefox";
         EDITOR = "${pkgs.vim}/bin/vim";
         #QT_QPA_PLATFORMTHEME = "qt5ct";
         READER = "${pkgs.zathura}/bin/zathura";
         TERMINAL = "${pkgs.xst}/bin/xst";
         #VISUAL = "nano";
         # Clean-up
-        LESSHISTFILE = "-"; # Remove the LESS history file.
+        LESSHISTFILE = "-"; # Remove the history file.
         # Program Settings
-        WINEDEBUG = "-all"; # Increase Performance with WINE?
+        WINEDEBUG = "-all"; # Increase Performance with WINE
       };
       stateVersion = "20.03";
     };
@@ -921,7 +921,7 @@ in {
     xdg.enable = true;
 
     xsession.enable = true;
-    xsession.initExtra = ''
+    xsession.initExtra = '' # TODO: Hardware Dependent
       ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 00 action set button 1 # Left Click
       ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 01 action set button 2 # Right Click
       ${pkgs.libratbag}/bin/ratbagctl 'Logitech Gaming Mouse G600' profile 0 button 02 action set button 3 # Middle Click
