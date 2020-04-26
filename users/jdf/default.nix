@@ -269,9 +269,15 @@ in {
         };
       }
     ];
-    programs.zsh.profileExtra = "";
-    programs.zsh.sessionVariables = { };
-    programs.zsh.shellAliases = { };
+    programs.zsh.profileExtra = "unsetopt share_history";
+    programs.zsh.sessionVariables = { 
+      PATH = "$PATH:$HOME/.local/bin";
+    };
+    programs.zsh.shellAliases = { 
+      "castget" = "castget --rcfile=/home/jdf/.config/castget --progress-bar --verbose";
+      "synonym" = "() { ${pkgs.wordnet}/bin/wn $* -simsv | less }";
+      ".." = "cd ..";
+    };
 
     gtk.enable = true;
 
