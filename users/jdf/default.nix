@@ -301,6 +301,42 @@ in {
       };
       file = {
         # ~/
+        # ~/.config/
+        castget = {
+          target = ".config/castget";
+          text = ''
+            # Global
+            [*]
+            filename=%(channel_title)-%(date)-%(title).mp3
+            id3contenttype=Podcast
+            playlist=/home/jdf/podcasts.m3u
+            spool=/home/jdf/hdd0/.cache/podcasts
+
+            # Chris Fisher
+            [chrislascast]
+            url=https://chrislas.com/cast?format=rss
+            [unfilter]
+            url=https://unfilter.show/rss
+            [worklifeandrv]
+            url=http://worklifeandrv.com/episodes?format=rss
+
+            # Jupiter Broadcasting
+            [jupiterextras]
+            url=https://extras.show/rss
+            [linuxheadlines]
+            url=https://linuxheadlines.show/rss
+            [linuxunplugged]
+            url=https://linuxunplugged.com/rss
+            [selfhosted]
+            url=https://selfhosted.show/rss
+            [techsnap]
+            url=https://techsnap.systems/rss
+
+            # Other
+            [lundukejournal]
+            url=http://vault.lunduke.com/LundukeShowMP3.xml
+          '';
+        };
         # ~/.local/bin
         discord_runner = {
           executable = true;
@@ -821,7 +857,7 @@ in {
         xkbvalidate # NixOS tool to validate X keyboard configuration
 
         # The NixOS package search is missing the expression path, so I'm not categorizing these new packages right now.
-        chromedriver
+        castget
         cht-sh
         python37Packages.discogs_client
         flac
