@@ -60,7 +60,7 @@ in {
     programs.firefox = {
       enable = true; # Whether to enable Firefox
       package = with pkgs;
-        firefox-devedition-bin; # If state version ≥ 19.09 then this should be wrapped
+        firefox-bin; # If state version ≥ 19.09 then this should be wrapped
       profiles.jdf = {
         #extraConfig = builtins.readFile (builtins.fetchurl "https://raw.githubusercontent.com/ghacksuserjs/ghacks-user.js/master/user.js"); # ghacks-user.js
         id = 0;
