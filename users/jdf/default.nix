@@ -716,6 +716,7 @@ in {
         wxmupen64plus # GUI for the Mupen64Plus 2.0 emulato
         xcpc # A portable Amstrad CPC 464/664/6128 emulator written in C
         yabause # An open-source Sega Saturn emulator
+        nur.repos.joshuafern.yuzu # An experimental Nintendo Switch emulator
         zsnes # A Super Nintendo Entertainment System Emulator
 
         # misc/themes
@@ -736,8 +737,10 @@ in {
         nix-binary-cache # A set of scripts to serve the Nix store as a binary cache
 
         # servers/x11
-        xorg.xev
-        xorg.xinit
+        xorg.xcursorthemes #
+        xorg.transset #
+        xorg.xev #
+        xorg.xinit #
 
         # shells
         dash # A POSIX-compliant implementation of /bin/sh that aims to be as small as possible
@@ -857,16 +860,19 @@ in {
         xkbvalidate # NixOS tool to validate X keyboard configuration
 
         # The NixOS package search is missing the expression path, so I'm not categorizing these new packages right now.
+        alpine
         castget
         cht-sh
         python37Packages.discogs_client
         flac
-        geckodriver
         gimp-with-plugins
+        gnome3.evolution
         loadwatch
         qiv # Quick image viewer
+        nur.repos.joshuafern.minigalaxy
         mp3val
         mythes
+        neomutt
         nyx
         oneko # Creates a cute cat chasing around your mouse cursor
         opendungeons # An open source, real time strategy game sharing game elements with the Dungeon Keeper series and Evil Genius.
@@ -874,11 +880,10 @@ in {
         python37Packages.pylast
         python37Packages.requests
         python37Packages.requests_oauthlib
+        thunderbird
         translate-shell
         tree # Command to produce a depth indented directory listing
         wordnet
-        xorg.xcursorthemes
-        xorg.transset
       ];
       sessionVariables = {
         # Default Programs
