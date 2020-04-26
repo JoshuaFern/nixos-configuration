@@ -111,7 +111,6 @@
     libvdpau
     vdpauinfo
   ];
-  hardware.opengl.s3tcSupport = true;
   hardware.pulseaudio.support32Bit = true;
   hardware.pulseaudio.enable = true;
   hardware.pulseaudio.daemon.logLevel = "error";
