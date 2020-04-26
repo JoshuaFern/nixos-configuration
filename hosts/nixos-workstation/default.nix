@@ -192,7 +192,6 @@
     chromium.extraOpts =
       { # This seems to affect certain other Chromium based browsers as well. https://cloud.google.com/docs/chrome-enterprise/policies/
         DefaultPluginsSetting = 3; # Click to run Flash.
-        DiskCacheDir = "/tmp/.chromium-\${user_name}";
         ExtensionInstallForcelist = [
           "nngceckbapebfimnlniiiahkandclblb;https://clients2.google.com/service/update2/crx" # Bitwarden
           "dcpihecpambacapedldabdbpakmachpb;https://raw.githubusercontent.com/iamadamdev/bypass-paywalls-chrome/master/updates.xml" # Bypass Paywalls
