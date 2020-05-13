@@ -13,16 +13,16 @@
   boot.kernelParams = [
     "vga=0x034d" # 1080p 24bit framebuffer
     # Disable mitigations https://make-linux-fast-again.com
-    "noibrs"
-    "noibpb"
-    "nopti"
-    "nospectre_v2"
-    "nospectre_v1"
-    "l1tf=off"
-    "nospec_store_bypass_disable"
-    "no_stf_barrier"
-    "mds=off"
-    "mitigations=off"
+    #"noibrs"
+    #"noibpb"
+    #"nopti"
+    #"nospectre_v2"
+    #"nospectre_v1"
+    #"l1tf=off"
+    #"nospec_store_bypass_disable"
+    #"no_stf_barrier"
+    #"mds=off"
+    #"mitigations=off"
   ];
   boot.postBootCommands = ''
     echo bfq > /sys/block/sda/queue/scheduler
