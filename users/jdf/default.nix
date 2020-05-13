@@ -28,6 +28,7 @@ in {
           unstable = import (builtins.fetchTarball "https://github.com/nixos/nixpkgs-channels/archive/nixpkgs-unstable.tar.gz") { };
           master = import (builtins.fetchTarball "https://github.com/NixOS/nixpkgs/archive/master.tar.gz") { };
         };
+        permittedInsecurePackages = [ "p7zip-16.02" ];
       };
       news.display = "silent";
       programs.beets.enable = true;
