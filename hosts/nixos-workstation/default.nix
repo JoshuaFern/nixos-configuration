@@ -6,15 +6,12 @@
   ];
   #boot.loader.efi.canTouchEfiVariables = true; # Allowed to modify EFI boot variables
   #boot.loader.generationsDir.copyKernels = true; # Copy necessary files into /boot so /nix/store is not needed by the boot loader
-  boot.loader.systemd-boot.configurationLimit =
-    10; # Maximum configurations in boot menu
+  boot.loader.systemd-boot.configurationLimit = 10; # Maximum configurations in boot menu
   boot.loader.systemd-boot.consoleMode = "max"; # Console resolution
   boot.loader.systemd-boot.enable = true; # systemd-boot (formerly gummiboot)
-  boot.kernelPackages = with pkgs;
-    linuxPackages_latest; # linux kernel selection
+  boot.kernelPackages = with pkgs; linuxPackages_latest; # linux kernel selection
   boot.kernelParams = [
     "vga=0x034d" # 1080p 24bit framebuffer
-    "intel_pstate=nohwp" # Disables Intel's HWP (Hardware-managed P-states) https://www.kernel.org/doc/html/v4.12/admin-guide/pm/intel_pstate.html
     # Disable mitigations https://make-linux-fast-again.com
     "noibrs"
     "noibpb"
@@ -32,25 +29,6 @@
     echo bfq > /sys/block/sdb/queue/scheduler
     echo kyber > /sys/block/sdc/queue/scheduler
   '';
-
-  console.colors = [ # Green colorscheme
-    "001100"
-    "007700"
-    "00bb00"
-    "007700"
-    "009900"
-    "00bb00"
-    "005500"
-    "00bb00"
-    "007700"
-    "007700"
-    "00bb00"
-    "007700"
-    "009900"
-    "00bb00"
-    "005500"
-    "00ff00"
-  ];
 
   environment.systemPackages = with pkgs; [
     # tools/filesystems
@@ -75,52 +53,26 @@
   fonts.fontconfig.enable = true;
   fonts.fontconfig.includeUserConf = true;
   fonts.fontconfig.penultimate.enable = true;
-  fonts.fonts = with pkgs; [
-    cascadia-code
-    dejavu_fonts
-    font-awesome-ttf
-    google-fonts
-    liberation_ttf
-    noto-fonts
-    terminus_font
-    terminus_font_ttf
-    ubuntu_font_family
-  ];
+  fonts.fonts = with pkgs; [ cascadia-code dejavu_fonts font-awesome-ttf google-fonts liberation_ttf noto-fonts terminus_font terminus_font_ttf ubuntu_font_family ];
 
   gtk.iconCache.enable = true;
 
-  hardware.cpu.intel.updateMicrocode = true;
+  #hardware.cpu.intel.updateMicrocode = true;
   hardware.enableAllFirmware = true;
   #hardware.nvidia.modesetting.enable = true;
   hardware.opengl.driSupport = true;
   hardware.opengl.driSupport32Bit = true;
   hardware.opengl.enable = true;
-  hardware.opengl.extraPackages = with pkgs; [
-    gst_all_1.gst-vaapi
-    libva-full
-    vaapiVdpau
-    libvdpau-va-gl
-    libvdpau
-    vdpauinfo
-  ];
-  hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [
-    gst_all_1.gst-vaapi
-    libva-full
-    vaapiVdpau
-    libvdpau-va-gl
-    libvdpau
-    vdpauinfo
-  ];
+  hardware.opengl.extraPackages = with pkgs; [ gst_all_1.gst-vaapi libva-full vaapiVdpau libvdpau-va-gl libvdpau vdpauinfo ];
+  hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ gst_all_1.gst-vaapi libva-full vaapiVdpau libvdpau-va-gl libvdpau vdpauinfo ];
   hardware.pulseaudio.support32Bit = true;
   hardware.pulseaudio.enable = true;
   hardware.pulseaudio.daemon.logLevel = "error";
   hardware.pulseaudio.package = with pkgs; pulseaudioFull;
   hardware.pulseaudio.daemon.config = {
-    flat-volumes =
-      "no"; # Avoids damaging your hearing. https://www.reddit.com/r/linux/comments/2rjiaa/horrible_decisions_flat_volumes_in_pulseaudio_a/
+    flat-volumes = "no"; # Avoids damaging your hearing. https://www.reddit.com/r/linux/comments/2rjiaa/horrible_decisions_flat_volumes_in_pulseaudio_a/
   };
-  hardware.steam-hardware.enable =
-    true; # Sets udev rules for Steam Controller, among other devices
+  hardware.steam-hardware.enable = true; # Sets udev rules for Steam Controller, among other devices
 
   networking.defaultGateway.address = "192.168.1.1";
   networking.enableIPv6 = false;
@@ -189,22 +141,21 @@
 
   programs = {
     adb.enable = true; # Android Debugging
-    chromium.extraOpts =
-      { # This seems to affect certain other Chromium based browsers as well. https://cloud.google.com/docs/chrome-enterprise/policies/
-        DefaultPluginsSetting = 3; # Click to run Flash.
-        ExtensionInstallForcelist = [
-          "nngceckbapebfimnlniiiahkandclblb;https://clients2.google.com/service/update2/crx" # Bitwarden
-          "dcpihecpambacapedldabdbpakmachpb;https://raw.githubusercontent.com/iamadamdev/bypass-paywalls-chrome/master/updates.xml" # Bypass Paywalls
-          "ldpochfccmkkmhdbclfhpagapcfdljkj;https://clients2.google.com/service/update2/crx" # Decentraleyes
-          "aiimboljphncldaakcnapfolgnjonlea;https://clients2.google.com/service/update2/crx" # The FFZ Add-On Pack
-          "fadndhdgpmmaapbmfcknlfgcflmmmieb;https://clients2.google.com/service/update2/crx" # FrankerFaceZ
-          "dhdgffkkebhmkfjojejmpbldmpobfkfo;https://clients2.google.com/service/update2/crx" # Tampermonkey
-          "hjdoplcnndgiblooccencgcggcoihigg;https://clients2.google.com/service/update2/crx" # Terms of Service; Didn't Read
-          "cjpalhdlnbpafiamejdnhcphjbkeiagm;https://clients2.google.com/service/update2/crx" # uBlock Origin
-          "pgdnlhfefecpicbbihgmbmffkjpaplco;https://clients2.google.com/service/update2/crx" # uBlock Origin Extra
-        ];
-        PasswordManagerEnabled = false; # We're using our own password manager.
-      };
+    chromium.extraOpts = { # This seems to affect certain other Chromium based browsers as well. https://cloud.google.com/docs/chrome-enterprise/policies/
+      DefaultPluginsSetting = 3; # Click to run Flash.
+      ExtensionInstallForcelist = [
+        "nngceckbapebfimnlniiiahkandclblb;https://clients2.google.com/service/update2/crx" # Bitwarden
+        "dcpihecpambacapedldabdbpakmachpb;https://raw.githubusercontent.com/iamadamdev/bypass-paywalls-chrome/master/updates.xml" # Bypass Paywalls
+        "ldpochfccmkkmhdbclfhpagapcfdljkj;https://clients2.google.com/service/update2/crx" # Decentraleyes
+        "aiimboljphncldaakcnapfolgnjonlea;https://clients2.google.com/service/update2/crx" # The FFZ Add-On Pack
+        "fadndhdgpmmaapbmfcknlfgcflmmmieb;https://clients2.google.com/service/update2/crx" # FrankerFaceZ
+        "dhdgffkkebhmkfjojejmpbldmpobfkfo;https://clients2.google.com/service/update2/crx" # Tampermonkey
+        "hjdoplcnndgiblooccencgcggcoihigg;https://clients2.google.com/service/update2/crx" # Terms of Service; Didn't Read
+        "cjpalhdlnbpafiamejdnhcphjbkeiagm;https://clients2.google.com/service/update2/crx" # uBlock Origin
+        "pgdnlhfefecpicbbihgmbmffkjpaplco;https://clients2.google.com/service/update2/crx" # uBlock Origin Extra
+      ];
+      PasswordManagerEnabled = false; # We're using our own password manager.
+    };
     java.enable = true;
     java.package = with pkgs; jdk;
     mtr.enable = true;
@@ -228,8 +179,7 @@
     usbtop.enable = true;
   };
 
-  security.chromiumSuidSandbox.enable =
-    true; # May fix the "You are not adequately sandboxed!" issue
+  security.chromiumSuidSandbox.enable = true; # May fix the "You are not adequately sandboxed!" issue
   security.pam.loginLimits = [{
     domain = "*";
     type = "hard";
@@ -242,24 +192,19 @@
   security.virtualisation.flushL1DataCache = "never";
 
   services = {
-    accounts-daemon.enable =
-      true; # A DBus service for accessing the list of user accounts and information
+    accounts-daemon.enable = true; # A DBus service for accessing the list of user accounts and information
     emacs.enable = true; # Use "emacsclient" to connect to the daemon
     emacs.package = with pkgs; emacs;
     gvfs.enable = true; # Userspace virtual filesystem
     #kmscon.enable = true; # A kms/dri-based userspace virtual terminal implementation
     netdata.enable = true;
-    pipewire.enable =
-      true; # Server and user space API to deal with multimedia pipelines
-    ratbagd.enable =
-      true; # Configure gaming mice, check for your device here: https://github.com/libratbag/libratbag/tree/master/data/devices
+    pipewire.enable = true; # Server and user space API to deal with multimedia pipelines
+    ratbagd.enable = true; # Configure gaming mice, check for your device here: https://github.com/libratbag/libratbag/tree/master/data/devices
     xserver.enable = true;
     xserver.displayManager.defaultSession = "none+i3";
     #xserver.exportConfiguration = true; # Symlink the X server configuration under /etc/X11/xorg.conf
     xserver.windowManager.i3.enable = true;
-    xserver.videoDrivers = [
-      "nvidiaBeta"
-    ]; # Video drivers that will be tried in order until one that supports your card is found
+    xserver.videoDrivers = [ "nvidiaBeta" ]; # Video drivers that will be tried in order until one that supports your card is found
   };
 
   sound.enable = true;
