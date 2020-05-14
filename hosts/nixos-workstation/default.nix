@@ -58,6 +58,7 @@
   gtk.iconCache.enable = true;
 
   #hardware.cpu.intel.updateMicrocode = true;
+  hardware.cpu.amd.updateMicrocode = true;
   hardware.enableAllFirmware = true;
   #hardware.nvidia.modesetting.enable = true;
   hardware.opengl.driSupport = true;
@@ -118,11 +119,11 @@
     27036 # Steam Remote Play
   ];
   networking.firewall.checkReversePath = false;
-  networking.interfaces.enp2s0.ipv4.addresses = [{
+  networking.interfaces.enp5s0.ipv4.addresses = [{
     address = "192.168.1.2";
     prefixLength = 24;
   }];
-  networking.interfaces.enp2s0.useDHCP = false;
+  networking.interfaces.enp5s0.useDHCP = false;
   networking.useDHCP = false;
   networking.useNetworkd = true;
 
