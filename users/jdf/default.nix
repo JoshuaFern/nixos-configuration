@@ -822,10 +822,12 @@ in {
           homebank
           innoextract
           lgogdownloader # Unofficial downloader to GOG.com for Linux users. It uses the same API as the official GOGDownloader
+          lm_sensors
           loadwatch
           qiv # Quick image viewer
           mp3val
           mythes
+          gnome3.nautilus
           neomutt
           nyx
           odamex
