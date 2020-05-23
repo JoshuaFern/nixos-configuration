@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }: {
   imports = [
-    ./cachix-combined.nix
+    ./../cachix-combined.nix
     ./..
     ../../users/jdf # "jdf" User Oprtions
   ];
@@ -12,35 +12,19 @@
   boot.kernelPackages = with pkgs; linuxPackages_latest; # linux kernel selection
   boot.kernelParams = [
     "vga=0x034d" # 1080p 24bit framebuffer
-    # Disable mitigations https://make-linux-fast-again.com
-    #"noibrs"
-    #"noibpb"
-    #"nopti"
-    #"nospectre_v2"
-    #"nospectre_v1"
-    #"l1tf=off"
-    #"nospec_store_bypass_disable"
-    #"no_stf_barrier"
-    #"mds=off"
-    #"mitigations=off"
   ];
   boot.postBootCommands = ''
-    echo bfq > /sys/block/sda/queue/scheduler
     echo bfq > /sys/block/sdb/queue/scheduler
     echo kyber > /sys/block/sdc/queue/scheduler
+    echo bfq > /sys/block/nvme0n1/queue/scheduler
   '';
+  boot.tmpOnTmpfs = true;
 
   environment.systemPackages = with pkgs; [
     # tools/filesystems
     squashfsTools # Tool for creating and unpacking squashfs filesystems
     squashfuse # FUSE filesystem to mount squashfs archives
   ];
-
-  fileSystems = {
-    "/".options = [ "noatime" "nodiratime" ]; # SSD
-    "/home".options = [ "noatime" "nodiratime" ]; # SSD
-    "/mnt/hdd0".options = [ "noatime" "nodiratime" "defaults" ]; # HDD
-  };
 
   fonts.enableDefaultFonts = true;
   fonts.enableFontDir = true;
@@ -194,6 +178,15 @@
 
   services = {
     accounts-daemon.enable = true; # A DBus service for accessing the list of user accounts and information
+    beesd.filesystems = {
+      root = {
+        spec = "/";
+        hashTableSizeMB = 2048;
+        verbosity = "crit";
+        extraOptions = [ "--loadavg-target" "5.0" ];
+        workDir = "/mnt/ssd1000/.beeshome";
+      };
+    };
     emacs.enable = true; # Use "emacsclient" to connect to the daemon
     emacs.package = with pkgs; emacs;
     gvfs.enable = true; # Userspace virtual filesystem
