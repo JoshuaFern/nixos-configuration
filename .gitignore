@@ -1,7 +1,0 @@
-# Non-managed nix configs
-hardware-configuration.nix
-ident.nix
-secrets.nix
-# vscode
-.vscode
-nixos-configuration.code-workspace

@@ -1,5 +1,0 @@
-# This file is used to identify which machine to load the configuration for by hostname.
-# For example, nixos-pc would load the configuration in ./hosts/nixos-pc/default.nix
-{
-  hostname = "nixos-pc";
-}
