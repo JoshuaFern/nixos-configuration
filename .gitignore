@@ -1,0 +1,26 @@
+flake.lock
+ident
+secrets.nix
+
+*~
+,*
+.*.swp
+.*.swo
+.idea/
+.vscode/
+outputs/
+result-*
+/doc/NEWS.html
+/doc/NEWS.txt
+/doc/manual.html
+/doc/manual.pdf
+/result
+/source/
+.version-suffix
+
+.DS_Store
+.mypy_cache
+__pycache__
+
+# JetBrains IDEA module declaration file
+/nixpkgs.iml
